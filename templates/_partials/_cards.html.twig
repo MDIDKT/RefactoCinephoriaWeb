@@ -1,0 +1,6 @@
+<div class="film-item bg-gray-50 shadow-sm rounded-lg overflow-hidden w-full sm:w-1/2 lg:w-1/4 m-4 flex flex-col justify-between">
+    <a href="{{ path('app_films_show', {'id': film.id}) }}" class="block w-full h-70 relative">
+        <div class="absolute top-0 left-0 w-full h-full "></div>
+        <img src="{{ vich_uploader_asset(film, 'imageFile') }}" alt="{{ film.titre }}" class="w-full h-full object-cover">
+    </a>
+</div>

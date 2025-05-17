@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Films{% endblock %}
+
+{% block body %}
+
+
+    <div class="flex flex-col md:flex-row m-12 bg-gray-500  p-4 rounded-lg">
+{#        <h1 class="text-3xl font-bold mb-4">Films</h1>#}
+        <div class="md:w-1/2 p-4 ">
+            <img class="rounded-lg" src="{{ vich_uploader_asset(film, 'imageFile') }}" alt="{{ film.titre }}">
+        </div>
+        <div class="md:w-1/2 p-4">
+            <h2 class="text-2xl font-bold text-blue-800">{{ film.titre }}</h2>
+            <p class="text-gray-700 mt-2">{{ film.description }}</p>
+            <div class="mt-4">
+                <p><strong>Id:</strong> {{ film.id }}</p>
+                <p><strong>Age Minimum:</strong> {{ film.ageMinimum }}</p>
+                <p><strong>Coup De Cœur:</strong> {{ film.coupDeCoeur ? 'Yes' : 'No' }}</p>
+                <p><strong>Note:</strong> {{ film.note }}</p>
+                <p><strong>Qualité:</strong> {{ film.qualite }}</p>
+            </div>
+            <div class="mt-4">
+                <h3 class="text-xl font-semibold text-blue-700">Avis</h3>
+                <ul class="list-disc list-inside text-gray-700">
+                    {% for avis in film.avis %}
+                        <li>{{ avis.commentaire }} : note {{ avis.note }}</li>
+                    {% else %}
+                        <li>Aucun avis trouvé</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+
+
+
+    <a href="{{ path('app_films_index') }}" class="text-blue-500 hover:text-blue-700">Liste des films</a>
+
+{% endblock %}

@@ -1,0 +1,65 @@
+<div class="container mx-auto mt-10 p-2 min-h-svh">
+    <div style="width: 45%; margin: 0 auto; ">
+        <div id="carouselExampleCaptions" class="relative w-full overflow-hidden" data-twe-carousel-init data-twe-ride="carousel">
+            <div class="relative w-full overflow-hidden after:clear-both after:block after:content-['']">
+                <!--First item-->
+                {% for film in filmsLast %}
+                    <div class="relative float-left -mr-[100%] w-full transition-transform duration-[600ms] ease-in-out motion-reduce:transition-none" data-twe-carousel-active data-twe-carousel-item style="backface-visibility: hidden">
+                        <img src="{{ vich_uploader_asset(film, 'imageFile') }}" class="block w-full" alt="{{ film.titre }}"/>
+                        <div class="absolute inset-x-[15%] bottom-5 hidden py-5 text-center text-white md:block">
+                        </div>
+                    </div>
+                {% endfor %}
+
+                <!--Carousel controls - prev item-->
+                <button class="absolute bottom-0 left-0 top-0 z-[1] flex w-[15%] items-center justify-center border-0 bg-none p-0 text-center text-white opacity-50 transition-opacity duration-150 ease-[cubic-bezier(0.25,0.1,0.25,1.0)] hover:text-white hover:no-underline hover:opacity-90 hover:outline-none focus:text-white focus:no-underline focus:opacity-90 focus:outline-none motion-reduce:transition-none" type="button" data-twe-target="#carouselExampleCaptions" data-twe-slide="prev">
+                <span class="inline-block h-8 w-8">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-6 w-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/>
+                    </svg>
+                </span>
+                </button>
+                <!--Carousel controls - next item-->
+                <button class="absolute bottom-0 right-0 top-0 z-[1] flex w-[15%] items-center justify-center border-0 bg-none p-0 text-center text-white opacity-50 transition-opacity duration-150 ease-[cubic-bezier(0.25,0.1,0.25,1.0)] hover:text-white hover:no-underline hover:opacity-90 hover:outline-none focus:text-white focus:no-underline focus:opacity-90 focus:outline-none motion-reduce:transition-none" type="button" data-twe-target="#carouselExampleCaptions" data-twe-slide="next">
+                <span class="inline-block h-8 w-8">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-6 w-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
+                    </svg>
+                </span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Carousel
+        const carousel = document.querySelector('[data-twe-carousel-init]');
+        const carouselItems = carousel.querySelectorAll('[data-twe-carousel-item]');
+        const carouselControls = carousel.querySelectorAll('[data-twe-slide]');
+
+        let currentSlide = 0;
+
+        carouselControls.forEach((control) => {
+            control.addEventListener('click', (e) => {
+                e.preventDefault();
+                const target = control.getAttribute('data-twe-slide');
+                if (target === 'prev') {
+                    currentSlide = currentSlide === 0 ? carouselItems.length - 1 : currentSlide - 1;
+                } else {
+                    currentSlide = currentSlide === carouselItems.length - 1 ? 0 : currentSlide + 1;
+                }
+                carouselItems.forEach((item, index) => {
+                    if (index === currentSlide) {
+                        item.classList.remove('hidden');
+                        item.classList.add('transition-transform', 'translate-x-0');
+                    } else {
+                        item.classList.add('hidden');
+                        item.classList.remove('transition-transform', 'translate-x-0');
+                    }
+                });
+            });
+        });
+    </script>
+
+
+</div>

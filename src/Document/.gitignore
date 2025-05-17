@@ -1,0 +1,5 @@
+# Ignorer les fichiers de cache
+/var/cache/*
+
+# Ignorer les fichiers de log
+/var/log/*

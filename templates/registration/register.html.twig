@@ -1,0 +1,49 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Inscription{% endblock %}
+
+{% block body %}
+    {% for flash_error in app.flashes('verify_email_error') %}
+        <div class="alert alert-danger text-red-600 mb-4" role="alert">{{ flash_error }}</div>
+    {% endfor %}
+    <div class="bg-gray-200 p-6 rounded-lg mx-auto mb-5 mt-8" style="max-width: 600px;">
+        <h1 class="text-2xl font-bold mb-4 flex justify-center text-blue-500">Inscription</h1>
+
+        {{ form_errors(registrationForm) }}
+
+        {{ form_start(registrationForm, { 'attr': {'class': 'space-y-4'} }) }}
+            <div>
+                {{ form_label(registrationForm.nom, 'Nom', {'label_attr': {'class': 'block text-gray-700'}}) }}
+                {{ form_widget(registrationForm.nom, {'attr': {'class': 'w-full px-4 py-2 border rounded-lg'}}) }}
+                {{ form_errors(registrationForm.nom) }}
+            </div>
+
+            <div>
+                {{ form_label(registrationForm.prenom, 'Prénom', {'label_attr': {'class': 'block text-gray-700'}}) }}
+                {{ form_widget(registrationForm.prenom, {'attr': {'class': 'w-full px-4 py-2 border rounded-lg'}}) }}
+                {{ form_errors(registrationForm.prenom) }}
+            </div>
+
+            <div>
+                {{ form_label(registrationForm.email, 'Email', {'label_attr': {'class': 'block text-gray-700'}}) }}
+                {{ form_widget(registrationForm.email, {'attr': {'class': 'w-full px-4 py-2 border rounded-lg'}}) }}
+                {{ form_errors(registrationForm.email) }}
+            </div>
+
+            <div>
+                {{ form_label(registrationForm.plainPassword, 'Mot de passe', {'label_attr': {'class': 'block text-gray-700'}}) }}
+                {{ form_widget(registrationForm.plainPassword, {'attr': {'class': 'w-full px-4 py-2 border rounded-lg'}}) }}
+                {{ form_errors(registrationForm.plainPassword) }}
+            </div>
+
+            <div>
+                {{ form_widget(registrationForm.agreeTerms, {'attr': {'class': 'w-full px-4 py-2 border rounded-lg'}}) }}
+                {{ form_errors(registrationForm.agreeTerms) }}
+            </div>
+
+            <div class="flex justify-center mt-4">
+                <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">S'inscrire</button>
+            </div>
+        {{ form_end(registrationForm) }}
+    </div>
+{% endblock %}

@@ -1,0 +1,46 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Films index{% endblock %}
+
+{% block body %}
+    <h1 class="text-5xl font-bold text-gray-900 mb-6 mt-4 flex justify-center">Films</h1>
+
+    <div class="container">
+        <div class="film-list space-y-20">
+            {% for film in films %}
+                <div class="film-item flex flex-col md:flex-row md:space-x-6 m-4 p-6 bg-white rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300">
+                    <div class="film-image md:w-1/2 p-2">
+                        <img class="rounded-xl shadow-md" src="{{ vich_uploader_asset(film, 'imageFile') }}" alt="{{ film.titre }}">
+                    </div>
+                    <div class="film-details md:w-2/3 p-4 flex flex-col justify-between">
+                        <div>
+                            <h2 class="text-7xl font-semibold text-gray-900">{{ film.titre }}</h2>
+                            <p class="text-gray-600 mt-2">{{ film.description|slice(0, 100) ~ '...' }}</p>
+                        </div>
+                        {# affichage des seances associer #}
+                        <div class="mt-4">
+                            <h3 class="text-2xl font-semibold text-gray-900">Seances</h3>
+                            <ul class="seance-list">
+                                {% for seance in film.seances %}
+                                    <li class="seance-item">
+                                        <a href="{{ path('app_seance_show', {'id': seance.id}) }}" class="text-blue-600 hover:underline">{{ seance.heureDebut|date('Y-m-d H:i:s') }}</a>
+                                    </li>
+                                {% else %}
+                                    <li class="seance-item">Aucune séance</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        {# fin affichage des seances associer #}
+
+                        <div class="mt-4">
+                            <a href="{{ path('app_films_show', {'id': film.id}) }}" class="btn btn-primary inline-block px-6 py-2.5 bg-blue-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out">Voir</a>
+                        </div>
+                    </div>
+                </div>
+            {% else %}
+                <p class="text-gray-700 text-center mt-6">Aucun film trouvé</p>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}
+

@@ -1,0 +1,48 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Avis index{% endblock %}
+
+{% block body %}
+    <h1>Avis index</h1>
+
+    <table class="min-w-full divide-y divide-gray-200">
+        <thead class="bg-gray-50">
+        <tr>
+            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Films
+            </th>
+            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Commentaire
+            </th>
+            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Actions
+            </th>
+        </tr>
+        </thead>
+        <tbody class="bg-white divide-y divide-gray-200">
+        {% for avis in avis %}
+            <tr>
+                <td class="px-6 py-4 whitespace-nowrap">
+                    <a href="{{ path('app_avis_show', {'id': avis.id}) }}" class="text-indigo-600 hover:text-indigo-900">{{ avis.film }}</a>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                    <a href="{{ path('app_avis_show', {'id': avis.id}) }}" class="text-indigo-600 hover:text-indigo-900">{{ avis.commentaire }}</a>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                    <a href="{{ path('app_avis_edit', {'id': avis.id}) }}" class="text-indigo-600 hover:text-indigo-900">Modifier</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="2" class="px-6 py-4 whitespace-nowrap text-center text-gray-500">
+                    Aucun Avis trouvé.
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+
+    <a href="{{ path('app_avis_new') }}">Create new</a>
+    <a href="{{ path('app_avis_index') }}">back to list</a>
+{% endblock %}

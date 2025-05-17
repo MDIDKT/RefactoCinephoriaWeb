@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Accueil{% endblock %}
+
+{% block body %}
+
+
+    {{ include('_partials/_hero.html.twig') }}
+    <div class="flex justify-center m-5">
+        <h1 class="text-7xl font-bold mb-8 uppercase text-gray-800">Liste des films</h1>
+    </div>
+    <div class="film-list flex flex-wrap mx-4 justify-center ">
+        {% for film in films %}
+            {% include('_partials/_cards.html.twig') %}
+        {% else %}
+            <p>Aucun film disponible pour le moment.</p>
+        {% endfor %}
+    </div>
+{% endblock %}

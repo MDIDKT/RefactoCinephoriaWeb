@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Avis{% endblock %}
+
+{% block body %}
+    <div class="flex items-center justify-center min-h-screen">
+        <div class="bg-gray-300 p-8 rounded-lg shadow-lg w-full max-w-md p-6">
+            <h1 class="text-5xl font-bold mb-8 flex justify-center uppercase">{{ film.titre }}</h1>
+
+            {{ include('avis/_form.html.twig', {'button_label': 'Valider'}) }}
+
+            <a href="{{ path('app_avis_index') }}" class="text-blue-500 hover:underline mt-4 inline-block">Retour à la liste des avis</a>
+
+            {{ include('avis/_delete_form.html.twig') }}
+        </div>
+    </div>
+{% endblock %}
