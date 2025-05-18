@@ -18,7 +18,7 @@
                             <p class="text-gray-600 mt-2">{{ film.description|slice(0, 100) ~ '...' }}</p>
                         </div>
                         {# affichage des seances associer #}
-                        <div class="mt-4">
+                       {#  <div class="mt-4">
                             <h3 class="text-2xl font-semibold text-gray-900">Seances</h3>
                             <ul class="seance-list">
                                 {% for seance in film.seances %}
@@ -29,7 +29,7 @@
                                     <li class="seance-item">Aucune séance</li>
                                 {% endfor %}
                             </ul>
-                        </div>
+                        </div>#}
                         {# fin affichage des seances associer #}
 
                         <div class="mt-4">
