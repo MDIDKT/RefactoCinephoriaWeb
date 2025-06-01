@@ -22,41 +22,41 @@ class Sieges
     #[ORM\ManyToOne(inversedBy: 'sieges')]
     private ?Reservations $reservation = null;
 
-    public function getId (): ?int
+    public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getNumeroSiege (): ?int
+    public function getNumeroSiege(): ?int
     {
         return $this->numeroSiege;
     }
 
-    public function setNumeroSiege (int $numeroSiege): static
+    public function setNumeroSiege(int $numeroSiege): static
     {
         $this->numeroSiege = $numeroSiege;
 
         return $this;
     }
 
-    public function isSiegePMR (): ?bool
+    public function isSiegePMR(): ?bool
     {
         return $this->siegePMR;
     }
 
-    public function setSiegePMR (bool $siegePMR): static
+    public function setSiegePMR(bool $siegePMR): static
     {
         $this->siegePMR = $siegePMR;
 
         return $this;
     }
 
-    public function getReservation (): ?Reservations
+    public function getReservation(): ?Reservations
     {
         return $this->reservation;
     }
 
-    public function setReservation (?Reservations $reservation): static
+    public function setReservation(?Reservations $reservation): static
     {
         $this->reservation = $reservation;
 

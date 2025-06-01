@@ -19,13 +19,12 @@ use Symfony\Component\Security\Core\User\UserInterface;
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['email'])]
 #[UniqueEntity(fields: ['email'], message: 'There is already an account with this email')]
-#[ApiResource
-(operations: [
-    new get(),
-    new post(),
-    new put(),
-    new delete(),
-    new patch(),
+#[ApiResource(operations: [
+    new Get(),
+    new Post(),
+    new Put(),
+    new Delete(),
+    new Patch(),
 ]
 )]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
@@ -145,7 +144,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function getUserIdentifier(): string
     {
-        return (string)$this->email;
+        return (string) $this->email;
     }
 
     /**

@@ -20,46 +20,45 @@ class Incidents
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $date = null;
 
-    #[ORM\ManyToOne(targetEntity: Salles::class, inversedBy: "incidents")]
+    #[ORM\ManyToOne(targetEntity: Salles::class, inversedBy: 'incidents')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Salles $salle = null;
 
-
-    public function getId (): ?int
+    public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getDescription (): ?string
+    public function getDescription(): ?string
     {
         return $this->description;
     }
 
-    public function setDescription (?string $description): static
+    public function setDescription(?string $description): static
     {
         $this->description = $description;
 
         return $this;
     }
 
-    public function getDate (): ?\DateTimeInterface
+    public function getDate(): ?\DateTimeInterface
     {
         return $this->date;
     }
 
-    public function setDate (\DateTimeInterface $date): static
+    public function setDate(\DateTimeInterface $date): static
     {
         $this->date = $date;
 
         return $this;
     }
 
-    public function getSalle (): ?Salles
+    public function getSalle(): ?Salles
     {
         return $this->salle;
     }
 
-    public function setSalle (?Salles $salle): static
+    public function setSalle(?Salles $salle): static
     {
         $this->salle = $salle;
 

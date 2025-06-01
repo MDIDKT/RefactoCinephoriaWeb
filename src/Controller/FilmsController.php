@@ -51,14 +51,13 @@ final class FilmsController extends AbstractController
             throw $this->createNotFoundException('Le film avec cet identifiant n\'existe pas.');
         }
 
-
         $avisApprouves = array_filter($film->getAvis()->toArray(), function ($avis) {
             return $avis->isApprouve();
         });
 
         return $this->render('films/show.html.twig', [
             'film' => $film,
-            'avis' => $avisApprouves
+            'avis' => $avisApprouves,
         ]);
     }
 
@@ -95,6 +94,7 @@ final class FilmsController extends AbstractController
         // Supprimer le film
         $entityManager->remove($film);
         $entityManager->flush();
+
         // Rediriger vers la liste des films
         return $this->redirectToRoute('app_films_index');
     }

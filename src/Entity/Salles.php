@@ -209,6 +209,20 @@ class Salles
         $this->numeroSalle = $numeroSalle;
     }
 
+    public function reservePlaces(int $nombre): self
+    {
+        // Vérifiez si vous pouvez réserver ce nombre de places
+        $placesDisponibles = $this->getNombrePlacesDisponibles();
+
+        if ($nombre > $placesDisponibles) {
+            throw new \InvalidArgumentException(sprintf('Impossible de réserver %d places. Seulement %d places disponibles.', $nombre, $placesDisponibles));
+        }
+
+        $this->placesOccupees += $nombre;
+
+        return $this;
+    }
+
     public function getNombrePlacesDisponibles(): int
     {
         return max(0, $this->nombreSiege - $this->placesOccupees - $this->nombreSiegePMR);
@@ -217,25 +231,5 @@ class Salles
     public function setNombrePlacesDisponibles(int $nombrePlacesDisponibles): void
     {
         $this->nombrePlacesDisponibles = $nombrePlacesDisponibles;
-    }
-
-    public function reservePlaces(int $nombre): self
-    {
-        // Vérifiez si vous pouvez réserver ce nombre de places
-        $placesDisponibles = $this->getNombrePlacesDisponibles();
-
-        if ($nombre > $placesDisponibles) {
-            throw new \InvalidArgumentException(
-                sprintf(
-                    'Impossible de réserver %d places. Seulement %d places disponibles.',
-                    $nombre,
-                    $placesDisponibles
-                )
-            );
-        }
-
-        $this->placesOccupees += $nombre;
-
-        return $this;
     }
 }

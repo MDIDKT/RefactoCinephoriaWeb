@@ -8,9 +8,9 @@ use App\Entity\Reservations;
 use App\Entity\Seance;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 
 class ReservationsType extends AbstractType
 {
@@ -47,7 +47,7 @@ class ReservationsType extends AbstractType
     {
         return [
             'class' => Seance::class,
-            'choice_label' => fn(Seance $seance) => $this->formatSeanceChoice($seance),
+            'choice_label' => fn (Seance $seance) => $this->formatSeanceChoice($seance),
             'label' => 'Choisir une séance',
             'attr' => ['class' => 'form-input mt-1 block w-full'],
             'placeholder' => 'Choisissez une séance valide',

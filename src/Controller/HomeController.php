@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-
 use App\Repository\FilmsRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -15,12 +14,11 @@ class HomeController extends AbstractController
     #[Route('/', name: 'app_home')]
     public function index(FilmsRepository $filmsRepository, EntityManagerInterface $em, UserPasswordHasherInterface $hasher): Response
     {
-
         $films = $filmsRepository->findAll();
+
         return $this->render('home/index.html.twig', [
             'films' => $films,
             'filmsLast' => $filmsRepository->find3LastFilms(),
         ]);
     }
-
 }

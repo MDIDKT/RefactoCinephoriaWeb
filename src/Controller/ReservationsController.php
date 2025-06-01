@@ -7,7 +7,6 @@ namespace App\Controller;
 use App\Entity\Reservations;
 use App\Form\ReservationsType;
 use App\Repository\ReservationsRepository;
-use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -31,7 +30,7 @@ final class ReservationsController extends AbstractController
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
         $reservation = new Reservations();
-        $reservation->setDate(new DateTimeImmutable());
+        $reservation->setDate(new \DateTimeImmutable());
         $form = $this->createForm(ReservationsType::class, $reservation);
         $form->handleRequest($request);
 
@@ -50,8 +49,9 @@ final class ReservationsController extends AbstractController
         $seance = $reservation->getSeances();
 
         // Vérification de la validité de la séance et de la salle
-        if ($seance === null || $seance->getSalle() === null) {
+        if (null === $seance || null === $seance->getSalle()) {
             $this->addFlash('error', 'Séance ou salle invalide pour cette réservation.');
+
             return $this->render('reservations/new.html.twig', [
                 'reservation' => $reservation,
                 'form' => $this->createForm(ReservationsType::class, $reservation)->createView(),
@@ -64,6 +64,7 @@ final class ReservationsController extends AbstractController
         // 1. Validation du nombre de places demandé
         if ($requestedSeats <= 0) {
             $this->addFlash('error', 'Le nombre de places doit être supérieur à 0.');
+
             return $this->render('reservations/new.html.twig', [
                 'reservation' => $reservation,
                 'form' => $this->createForm(ReservationsType::class, $reservation)->createView(),
@@ -79,6 +80,7 @@ final class ReservationsController extends AbstractController
                 $requestedSeats,
                 $placesDisponibles
             ));
+
             return $this->render('reservations/new.html.twig', [
                 'reservation' => $reservation,
                 'form' => $this->createForm(ReservationsType::class, $reservation)->createView(),
@@ -92,6 +94,7 @@ final class ReservationsController extends AbstractController
                 $requestedSeats,
                 $placesDisponibles
             ));
+
             return $this->render('reservations/new.html.twig', [
                 'reservation' => $reservation,
                 'form' => $this->createForm(ReservationsType::class, $reservation)->createView(),
@@ -107,6 +110,7 @@ final class ReservationsController extends AbstractController
         $entityManager->flush();
 
         $this->addFlash('success', 'Réservation effectuée avec succès.');
+
         return $this->redirectToRoute('app_reservations_index', [], Response::HTTP_SEE_OTHER);
     }
 
@@ -120,10 +124,11 @@ final class ReservationsController extends AbstractController
             $initialReservedSeats = $reservation->getNombrePlaces(); // Places réservées avant modification
             $salle = $reservation->getSeances()->getSalle();
 
-            if ($salle !== null) {
+            if (null !== $salle) {
                 // Vérifier si le nombre de places à libérer est valide
                 if ($initialReservedSeats > $salle->getPlacesOccupees()) {
                     $this->addFlash('error', 'Impossible de libérer plus de places qu\'occupées.');
+
                     return $this->render('reservations/edit.html.twig', [
                         'reservation' => $reservation,
                         'form' => $form->createView(),
@@ -146,6 +151,7 @@ final class ReservationsController extends AbstractController
                         $newRequestedSeats,
                         $placesDisponibles
                     ));
+
                     return $this->render('reservations/edit.html.twig', [
                         'reservation' => $reservation,
                         'form' => $form->createView(),
@@ -163,6 +169,7 @@ final class ReservationsController extends AbstractController
                 $entityManager->flush();
 
                 $this->addFlash('success', 'Réservation modifiée avec succès.');
+
                 return $this->redirectToRoute('app_reservations_index');
             }
         }
@@ -176,10 +183,10 @@ final class ReservationsController extends AbstractController
     #[Route('/{id}', name: 'app_reservations_delete', methods: ['POST'])]
     public function delete(Request $request, Reservations $reservation, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete' . $reservation->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete'.$reservation->getId(), $request->request->get('_token'))) {
             $salle = $reservation->getSeances()->getSalle();
 
-            if ($salle !== null) {
+            if (null !== $salle) {
                 $salle->libererPlaces($reservation->getNombrePlaces());
                 $entityManager->persist($salle);
             }

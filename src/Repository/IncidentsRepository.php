@@ -11,9 +11,9 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class IncidentsRepository extends ServiceEntityRepository
 {
-    public function __construct (ManagerRegistry $registry)
+    public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct ($registry, Incidents::class);
+        parent::__construct($registry, Incidents::class);
     }
 
     //    /**

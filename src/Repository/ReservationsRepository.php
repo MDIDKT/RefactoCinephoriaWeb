@@ -8,9 +8,9 @@ use Doctrine\Persistence\ManagerRegistry;
 
 class ReservationsRepository extends ServiceEntityRepository
 {
-    public function __construct (ManagerRegistry $registry)
+    public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct ($registry, Reservations::class);
+        parent::__construct($registry, Reservations::class);
     }
 
     // Ajoute ici des méthodes spécifiques pour l'entité Reservations

@@ -2,13 +2,12 @@
 
 namespace App\Entity;
 
-use Doctrine\DBAL\Types\Types;
-use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Metadata\ApiResource;
 use App\Repository\ReservationsRepository;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
-use App\Entity\User;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
+use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ReservationsRepository::class)]
 #[ApiResource]
@@ -42,7 +41,6 @@ class Reservations
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $status = null;
 
-
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $date = null;
 
@@ -56,6 +54,18 @@ class Reservations
     {
         $this->prixTotal = $this->getNombrePlaces() * 8;
         $this->sieges = new ArrayCollection();
+    }
+
+    public function getNombrePlaces(): ?int
+    {
+        return $this->nombrePlaces;
+    }
+
+    public function setNombrePlaces(int $nombrePlaces): static
+    {
+        $this->nombrePlaces = $nombrePlaces;
+
+        return $this;
     }
 
     public function getId(): ?int
@@ -86,19 +96,6 @@ class Reservations
 
         return $this;
     }
-
-    public function getNombrePlaces(): ?int
-    {
-        return $this->nombrePlaces;
-    }
-
-    public function setNombrePlaces(int $nombrePlaces): static
-    {
-        $this->nombrePlaces = $nombrePlaces;
-
-        return $this;
-    }
-
 
     public function getPrixTotal(): ?float
     {
@@ -186,7 +183,7 @@ class Reservations
     public function calculprixTotal($seance): float
     {
         // Vérifie que la séance est bien définie
-        if ($seance === null) {
+        if (null === $seance) {
             throw new \LogicException('Une séance doit être définie pour calculer le prix total.');
         }
 
@@ -228,5 +225,4 @@ class Reservations
 
         return $this;
     }
-
 }

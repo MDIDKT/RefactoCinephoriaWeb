@@ -11,9 +11,9 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class SeanceRepository extends ServiceEntityRepository
 {
-    public function __construct (ManagerRegistry $registry)
+    public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct ($registry, Seance::class);
+        parent::__construct($registry, Seance::class);
     }
 
     //    /**
@@ -40,5 +40,4 @@ class SeanceRepository extends ServiceEntityRepository
     //            ->getOneOrNullResult()
     //        ;
     //    }
-
 }

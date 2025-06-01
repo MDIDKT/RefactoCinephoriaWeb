@@ -2,13 +2,13 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
 use App\Repository\SeanceRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Attribute\Groups;
-use ApiPlatform\Metadata\ApiResource;
 
 #[ORM\Entity(repositoryClass: SeanceRepository::class)]
 #[ApiResource(
@@ -32,15 +32,15 @@ class Seance
     private Collection $reservations;
 
     #[ORM\ManyToOne(inversedBy: 'seances')]
-    #[Groups(['seance:write', 'seance:read' ])]
+    #[Groups(['seance:write', 'seance:read'])]
     private ?Films $films = null;
 
-    #[ORM\ManyToOne(targetEntity: Salles::class, inversedBy: "seances")]
-    #[Groups(['seance:write', 'seance:read' ])]
+    #[ORM\ManyToOne(targetEntity: Salles::class, inversedBy: 'seances')]
+    #[Groups(['seance:write', 'seance:read'])]
     private ?Salles $salle = null;
 
     #[ORM\ManyToOne(inversedBy: 'seance')]
-    #[Groups(['seance:write', 'seance:read' ])]
+    #[Groups(['seance:write', 'seance:read'])]
     private ?Cinemas $cinemas = null;
 
     #[ORM\Column(type: Types::INTEGER, nullable: true)]
@@ -58,23 +58,6 @@ class Seance
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getHeureDebut(): ?\DateTimeImmutable
-    {
-        return $this->heureDebut;
-    }
-
-    public function setHeureDebut(\DateTimeImmutable $heureDebut): static
-    {
-        $this->heureDebut = $heureDebut;
-
-        return $this;
-    }
-
-    public function getReservations(): Collection
-    {
-        return $this->reservations;
     }
 
     public function addReservation(Reservations $reservation): static
@@ -98,31 +81,6 @@ class Seance
         return $this;
     }
 
-    public function getFilms(): ?Films
-    {
-        return $this->films;
-    }
-
-    public function setFilms(?Films $films): static
-    {
-        $this->films = $films;
-
-        return $this;
-    }
-
-    public function getSalle(): ?Salles
-    {
-        // Vérifie si la salle est définie et la retourne.
-        return $this->salle;
-    }
-
-    public function setSalle(?Salles $salle): static
-    {
-        $this->salle = $salle;
-
-        return $this;
-    }
-
     public function getCinemas(): ?Cinemas
     {
         return $this->cinemas;
@@ -140,7 +98,7 @@ class Seance
         $salle = $this->getSalle();
 
         // Définit une valeur par défaut pour éviter une exception.
-        if ($salle === null) {
+        if (null === $salle) {
             return 0;
         }
 
@@ -150,12 +108,54 @@ class Seance
         return max(0, $nombrePlacesTotales - $nombrePlacesReserves); // Ne retourne jamais un nombre négatif.
     }
 
+    public function getSalle(): ?Salles
+    {
+        // Vérifie si la salle est définie et la retourne.
+        return $this->salle;
+    }
+
+    public function setSalle(?Salles $salle): static
+    {
+        $this->salle = $salle;
+
+        return $this;
+    }
+
+    public function getReservations(): Collection
+    {
+        return $this->reservations;
+    }
+
     public function __toString(): string
     {
         $film = $this->getFilms()?->getTitre() ?? 'Film non défini';
         $heureDebut = $this->getHeureDebut()?->format('H:i') ?? 'Non défini';
 
         return sprintf('%s (%s)', $film, $heureDebut);
+    }
+
+    public function getFilms(): ?Films
+    {
+        return $this->films;
+    }
+
+    public function setFilms(?Films $films): static
+    {
+        $this->films = $films;
+
+        return $this;
+    }
+
+    public function getHeureDebut(): ?\DateTimeImmutable
+    {
+        return $this->heureDebut;
+    }
+
+    public function setHeureDebut(\DateTimeImmutable $heureDebut): static
+    {
+        $this->heureDebut = $heureDebut;
+
+        return $this;
     }
 
     public function getHeureFin(): ?\DateTimeImmutable
@@ -189,5 +189,4 @@ class Seance
 
         return $this;
     }
-
 }

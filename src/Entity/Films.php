@@ -4,8 +4,6 @@ namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
 use App\Repository\FilmsRepository;
-use DateTime;
-use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
@@ -52,7 +50,7 @@ class Films
     #[ORM\Column(length: 255)]
     private ?string $qualite = null;
 
-    #[ORM\OneToMany(targetEntity: Reservations::class, mappedBy: 'films',)]
+    #[ORM\OneToMany(targetEntity: Reservations::class, mappedBy: 'films', )]
     private Collection $reservations;
 
     #[Vich\UploadableField(mapping: 'affiche', fileNameProperty: 'imageName', size: 'imageSize')]
@@ -73,7 +71,7 @@ class Films
     private Collection $cinemas;
 
     #[ORM\Column(type: 'datetime', nullable: true)]
-    private ?DateTimeInterface $createdAt = null;
+    private ?\DateTimeInterface $createdAt = null;
 
     public function __construct()
     {
@@ -189,7 +187,7 @@ class Films
 
         if ($imageFile) {
             // Mettre la date à jour si un nouveau fichier est chargé
-            $this->createdAt = new DateTime('now');
+            $this->createdAt = new \DateTime('now');
         }
 
         return $this;
@@ -237,12 +235,12 @@ class Films
         $this->avis = $avis;
     }
 
-    public function getCreatedAt(): ?DateTimeInterface
+    public function getCreatedAt(): ?\DateTimeInterface
     {
         return $this->createdAt;
     }
 
-    public function setCreatedAt(?DateTimeInterface $createdAt): void
+    public function setCreatedAt(?\DateTimeInterface $createdAt): void
     {
         $this->createdAt = $createdAt;
     }

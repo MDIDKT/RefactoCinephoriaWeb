@@ -10,32 +10,30 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
-use Symfony\Component\Form\Extension\Core\Type\DateType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class SeanceType extends AbstractType
 {
-    public function buildForm (FormBuilderInterface $builder, array $options): void
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add ('HeureDebut', DateTimeType::class, [
+            ->add('HeureDebut', DateTimeType::class, [
                 'widget' => 'single_text',
             ])
-            ->add ('films', EntityType::class, [
+            ->add('films', EntityType::class, [
                 'class' => Films::class,
                 'choice_label' => 'titre',
             ])
-            ->add ('salle', EntityType::class, [
+            ->add('salle', EntityType::class, [
                 'class' => Salles::class,
                 'choice_label' => 'numeroSalle',
                 'placeholder' => 'Choisissez une salle',
                 'required' => true, // Rendre obligatoire
             ])
-            ->add ('cinemas', EntityType::class, [
+            ->add('cinemas', EntityType::class, [
                 'class' => Cinemas::class,
-                'choice_label' => 'nom'
+                'choice_label' => 'nom',
             ])
             ->add('qualite', ChoiceType::class, [
                 'choices' => [
@@ -45,12 +43,11 @@ class SeanceType extends AbstractType
                 'placeholder' => 'Choisissez une qualité', // Guide l'utilisateur
                 'required' => true,
             ]);
-
     }
 
-    public function configureOptions (OptionsResolver $resolver): void
+    public function configureOptions(OptionsResolver $resolver): void
     {
-        $resolver->setDefaults ([
+        $resolver->setDefaults([
             'data_class' => Seance::class,
         ]);
     }

@@ -25,4 +25,19 @@ return [
     '@hotwired/turbo' => [
         'version' => '7.3.0',
     ],
+    '@eslint/js' => [
+        'version' => '9.28.0',
+    ],
+    'eslint/config' => [
+        'version' => '9.28.0',
+    ],
+    '@eslint/config-helpers' => [
+        'version' => '0.2.2',
+    ],
+    'globals' => [
+        'version' => '16.2.0',
+    ],
+    'eslint-plugin-react' => [
+        'version' => '7.37.5',
+    ],
 ];

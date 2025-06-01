@@ -7,14 +7,12 @@
     "php": ">=8.3",
     "ext-ctype": "*",
     "ext-iconv": "*",
-    "api-platform/core": "*",
-    "api-platform/doctrine-orm": "*",
-    "api-platform/symfony": "*",
+    "api-platform/core": "3.4.*",
     "doctrine/dbal": "^3",
     "doctrine/doctrine-bundle": "^2.13",
     "doctrine/doctrine-migrations-bundle": "^3.4",
     "doctrine/orm": "^3.2",
-    "easycorp/easyadmin-bundle": "^4.14",
+    "easycorp/easyadmin-bundle": "4.12.*",
     "fakerphp/faker": "^1.24",
     "nelmio/cors-bundle": "^2.5",
     "phpdocumentor/reflection-docblock": "^5.4",
@@ -48,6 +46,7 @@
     "symfony/translation": "7.2.*",
     "symfony/twig-bundle": "7.2.*",
     "symfony/ux-turbo": "^2.20",
+    "symfony/ux-twig-component": "^2.25",
     "symfony/validator": "7.2.*",
     "symfony/web-link": "7.2.*",
     "symfony/yaml": "7.2.*",
@@ -91,6 +90,8 @@
       "assets:install %PUBLIC_DIR%": "symfony-cmd",
       "importmap:install": "symfony-cmd"
     },
+    "fix:cs": "php vendor/bin/php-cs-fixer fix",
+    "fix:cs:dry": "php vendor/bin/php-cs-fixer fix --dry-run -vvv",
     "post-install-cmd": [
       "@auto-scripts"
     ],
@@ -110,13 +111,13 @@
   "require-dev": {
     "clubdrei/php-dev-server": "^1.2",
     "doctrine/doctrine-fixtures-bundle": "^4.0",
-    "phpunit/phpunit": "^9.5",
     "symfony/browser-kit": "7.2.*",
     "symfony/css-selector": "7.2.*",
     "symfony/debug-bundle": "7.2.*",
     "symfony/maker-bundle": "^1.63",
     "symfony/phpunit-bridge": "^7.1",
     "symfony/stopwatch": "7.2.*",
-    "symfony/web-profiler-bundle": "7.2.*"
+    "symfony/web-profiler-bundle": "7.2.*",
+    "phpunit/phpunit": "^9.5"
   }
 }
