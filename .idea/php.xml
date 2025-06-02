@@ -10,6 +10,11 @@
     <option name="highlightLevel" value="WARNING" />
     <option name="transferred" value="true" />
   </component>
+  <component name="PhpCSFixer">
+    <phpcsfixer_settings>
+      <phpcs_fixer_by_interpreter asDefaultInterpreter="true" interpreter_id="a6dcc759-6bd9-455a-9795-34a0e2546246" timeout="30000" />
+    </phpcsfixer_settings>
+  </component>
   <component name="PhpCodeSniffer">
     <phpcs_settings>
       <phpcs_by_interpreter asDefaultInterpreter="true" interpreter_id="a6dcc759-6bd9-455a-9795-34a0e2546246" timeout="30000" />
@@ -180,6 +185,45 @@
       <path value="$PROJECT_DIR$/vendor/symfony/polyfill-php84" />
       <path value="$PROJECT_DIR$/vendor/twig/html-extra" />
       <path value="$PROJECT_DIR$/vendor/symfonycasts/tailwind-bundle" />
+      <path value="$PROJECT_DIR$/vendor/symfonycasts 2/verify-email-bundle" />
+      <path value="$PROJECT_DIR$/vendor/react/event-loop" />
+      <path value="$PROJECT_DIR$/vendor/symfonycasts 2/tailwind-bundle" />
+      <path value="$PROJECT_DIR$/vendor/react/cache" />
+      <path value="$PROJECT_DIR$/vendor/react/stream" />
+      <path value="$PROJECT_DIR$/vendor/react/promise" />
+      <path value="$PROJECT_DIR$/vendor/react/dns" />
+      <path value="$PROJECT_DIR$/vendor/react/socket" />
+      <path value="$PROJECT_DIR$/vendor/react/child-process" />
+      <path value="$PROJECT_DIR$/vendor/fakerphp 2/faker" />
+      <path value="$PROJECT_DIR$/vendor/friendsofphp/php-cs-fixer" />
+      <path value="$PROJECT_DIR$/vendor/monolog 2/monolog" />
+      <path value="$PROJECT_DIR$/vendor/clue/ndjson-react" />
+      <path value="$PROJECT_DIR$/vendor/doctrine 2/migrations" />
+      <path value="$PROJECT_DIR$/vendor/webmozart 2/assert" />
+      <path value="$PROJECT_DIR$/vendor/doctrine 2/doctrine-migrations-bundle" />
+      <path value="$PROJECT_DIR$/vendor/doctrine 2/cache" />
+      <path value="$PROJECT_DIR$/vendor/doctrine 2/data-fixtures" />
+      <path value="$PROJECT_DIR$/vendor/doctrine 2/dbal" />
+      <path value="$PROJECT_DIR$/vendor/doctrine 2/lexer" />
+      <path value="$PROJECT_DIR$/vendor/doctrine 2/persistence" />
+      <path value="$PROJECT_DIR$/vendor/nelmio 2/cors-bundle" />
+      <path value="$PROJECT_DIR$/vendor/doctrine 2/inflector" />
+      <path value="$PROJECT_DIR$/vendor/doctrine 2/instantiator" />
+      <path value="$PROJECT_DIR$/vendor/doctrine 2/doctrine-fixtures-bundle" />
+      <path value="$PROJECT_DIR$/vendor/doctrine 2/event-manager" />
+      <path value="$PROJECT_DIR$/vendor/doctrine 2/orm" />
+      <path value="$PROJECT_DIR$/vendor/fidry/cpu-core-counter" />
+      <path value="$PROJECT_DIR$/vendor/doctrine 2/sql-formatter" />
+      <path value="$PROJECT_DIR$/vendor/doctrine 2/collections" />
+      <path value="$PROJECT_DIR$/vendor/doctrine 2/doctrine-bundle" />
+      <path value="$PROJECT_DIR$/vendor/doctrine 2/deprecations" />
+      <path value="$PROJECT_DIR$/vendor/myclabs 2/deep-copy" />
+      <path value="$PROJECT_DIR$/vendor/egulias 2/email-validator" />
+      <path value="$PROJECT_DIR$/vendor/evenement/evenement" />
+      <path value="$PROJECT_DIR$/vendor/willdurand 2/negotiation" />
+      <path value="$PROJECT_DIR$/vendor/vich 2/uploader-bundle" />
+      <path value="$PROJECT_DIR$/vendor/nikic 2/php-parser" />
+      <path value="$PROJECT_DIR$/vendor/api-platform 2/core" />
     </include_path>
   </component>
   <component name="PhpProjectSharedConfiguration" php_language_level="8.3" />
