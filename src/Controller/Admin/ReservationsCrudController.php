@@ -3,6 +3,7 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Reservations;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
@@ -19,33 +20,21 @@ class ReservationsCrudController extends AbstractCrudController
 
     public function configureFields(string $pageName): iterable
     {
-        return [
-            // Champ pour associer un cinéma
-            AssociationField::new('cinemas', 'Cinéma'),
+        yield AssociationField::new('cinemas', 'Cinéma');
+        yield AssociationField::new('films', 'Film');
+        yield AssociationField::new('seances', 'Séance');
+        yield IntegerField::new('nombrePlaces', 'Nombre de places');
+        yield TextField::new('status', 'Statut');
+        yield DateField::new('date', 'Date');
+        yield AssociationField::new('user', 'Utilisateur');
+        yield MoneyField::new('prixTotal', 'Prix total')
+            ->setCurrency('EUR')
+            ->setStoredAsCents(false)
+            ->setFormTypeOption('disabled', true);
 
-            // Champ pour associer un film
-            AssociationField::new('films', 'Film'),
+        if (Crud::PAGE_INDEX === $pageName) {
+            yield TextField::new('someComputedField', 'Quick Info');
+        }
 
-            // Champ pour associer une séance
-            AssociationField::new('seances', 'Séance'),
-
-            // Champ pour le nombre de places
-            IntegerField::new('nombrePlaces', 'Nombre de places'),
-
-            // Champ pour le statut (par exemple : "Réservé", "Annulé")
-            TextField::new('status', 'Statut'),
-
-            // Champ pour la date
-            DateField::new('date', 'Date'),
-
-            // Champ pour associer un utilisateur
-            AssociationField::new('user', 'Utilisateur'),
-
-            // Champ pour le prix total
-            MoneyField::new('prixTotal', 'Prix total')
-                ->setCurrency('EUR') // Définir la devise
-                ->setStoredAsCents(false) // Si vous stockez le prix en euros directement
-                ->setFormTypeOption('disabled', true), // Empêche l'édition de ce champ dans le formulaire
-        ];
     }
 }

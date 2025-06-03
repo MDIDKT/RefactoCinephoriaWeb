@@ -43,10 +43,20 @@ class UserCrudController extends AbstractCrudController
 
     public function configureFields(string $pageName): iterable
     {
+
+
         $fields = [
             IdField::new('id')->hideOnForm(),
             EmailField::new('email'),
         ];
+
+        $nom = TextField::new('nom')
+            ->setRequired(true);
+        $fields[] = $nom;
+
+        $prenom = TextField::new('prenom')
+            ->setRequired(true);
+        $fields[] = $prenom;
 
         $password = TextField::new('password')
             ->setFormType(PasswordType::class)
@@ -60,6 +70,7 @@ class UserCrudController extends AbstractCrudController
             ->autocomplete()
             ->setRequired(true);
         $fields[] = $roles;
+
 
         return $fields;
     }
@@ -109,4 +120,5 @@ class UserCrudController extends AbstractCrudController
             $user->setPassword($hash);
         };
     }
+
 }
