@@ -13,6 +13,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+use App\Service\ReservationsService;
+
 
 #[Route('/reservations')]
 #[IsGranted('ROLE_USER')] // Seuls les utilisateurs connectés peuvent accéder à ces routes et effectuer des réservations
@@ -27,12 +29,22 @@ final class ReservationsController extends AbstractController
     }
 
     #[Route('/new', name: 'app_reservations_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    public function new(Request $request, EntityManagerInterface $entityManager, ReservationsService $priceCalculator
+    ): Response
     {
         $reservation = new Reservations();
         $reservation->setDate(new \DateTimeImmutable());
         $form = $this->createForm(ReservationsType::class, $reservation);
         $form->handleRequest($request);
+
+        if ($reservation->getSeances() && $reservation->getNombrePlaces()) {
+            // on peut appeler le service ici
+            $prixTotal = $priceCalculator->calculerPrixTotal(
+                $reservation->getSeances(),
+                $reservation->getNombrePlaces()
+            );
+            $reservation->setPrixTotal($prixTotal);
+        }
 
         if ($form->isSubmitted() && $form->isValid()) {
             return $this->processReservation($reservation, $entityManager);
@@ -40,7 +52,7 @@ final class ReservationsController extends AbstractController
 
         return $this->render('reservations/new.html.twig', [
             'reservation' => $reservation,
-            'form' => $form,
+            'form' => $form->createView(),
         ]);
     }
 
@@ -183,7 +195,7 @@ final class ReservationsController extends AbstractController
     #[Route('/{id}', name: 'app_reservations_delete', methods: ['POST'])]
     public function delete(Request $request, Reservations $reservation, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$reservation->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $reservation->getId(), $request->request->get('_token'))) {
             $salle = $reservation->getSeances()->getSalle();
 
             if (null !== $salle) {
