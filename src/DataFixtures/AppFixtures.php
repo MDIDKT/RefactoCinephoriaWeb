@@ -19,6 +19,7 @@ class AppFixtures extends Fixture
         // $product = new Product();
         // $manager->persist($product);
         $faker = Factory::create('fr_FR');
+        $faker->unique(true);
 
         for ($i = 0; $i < 10; ++$i) {
             $cinema = new Cinemas();
@@ -85,6 +86,7 @@ class AppFixtures extends Fixture
             $reservation->setSalle($faker->randomElement($manager->getRepository(Salles::class)->findAll()));
             $reservation->setUser($faker->randomElement($manager->getRepository(User::class)->findAll()));
             $reservation->setNombrePlaces($faker->numberBetween(10, 100));
+            $reservation->setPrixTotal($faker->randomFloat(2, 10, 100));
             $reservation->setSalle($faker->randomElement($manager->getRepository(Salles::class)->findAll()));
             $reservation->setUser($faker->randomElement($manager->getRepository(User::class)->findAll()));
             $reservation->setDate(\DateTimeImmutable::createFromMutable(

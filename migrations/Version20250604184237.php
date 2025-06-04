@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20250603122830 extends AbstractMigration
+final class Version20250604184237 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -20,7 +20,9 @@ final class Version20250603122830 extends AbstractMigration
     public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
-
+        $this->addSql(<<<'SQL'
+            CREATE TABLE avis (id INT AUTO_INCREMENT NOT NULL, film_id INT DEFAULT NULL, commentaire LONGTEXT DEFAULT NULL, note INT NOT NULL, approuve TINYINT(1) NOT NULL, INDEX IDX_8F91ABF0567F5183 (film_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB
+        SQL);
         $this->addSql(<<<'SQL'
             CREATE TABLE cinemas (id INT AUTO_INCREMENT NOT NULL, nom VARCHAR(255) NOT NULL, ville VARCHAR(255) NOT NULL, adresse LONGTEXT NOT NULL, horaire VARCHAR(255) DEFAULT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB
         SQL);
@@ -41,9 +43,6 @@ final class Version20250603122830 extends AbstractMigration
         SQL);
         $this->addSql(<<<'SQL'
             CREATE TABLE seance (id INT AUTO_INCREMENT NOT NULL, films_id INT DEFAULT NULL, salle_id INT DEFAULT NULL, cinemas_id INT DEFAULT NULL, heure_debut DATETIME NOT NULL COMMENT '(DC2Type:datetime_immutable)', heure_fin DATETIME NOT NULL COMMENT '(DC2Type:datetime_immutable)', nombre_places INT DEFAULT NULL, qualite VARCHAR(255) NOT NULL, INDEX IDX_DF7DFD0E939610EE (films_id), INDEX IDX_DF7DFD0EDC304035 (salle_id), INDEX IDX_DF7DFD0EC5C76018 (cinemas_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB
-        SQL);
-        $this->addSql(<<<'SQL'
-            CREATE TABLE sieges (id INT AUTO_INCREMENT NOT NULL, reservation_id INT DEFAULT NULL, numero_siege INT NOT NULL, siege_pmr TINYINT(1) NOT NULL, INDEX IDX_38B0AE00B83297E7 (reservation_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB
         SQL);
         $this->addSql(<<<'SQL'
             CREATE TABLE user (id INT AUTO_INCREMENT NOT NULL, nom VARCHAR(180) NOT NULL, prenom VARCHAR(180) NOT NULL, email VARCHAR(180) NOT NULL, roles JSON NOT NULL, password VARCHAR(255) NOT NULL, is_verified TINYINT(1) NOT NULL, UNIQUE INDEX UNIQ_8D93D6496C6E55B5 (nom), UNIQUE INDEX UNIQ_8D93D649A625945B (prenom), UNIQUE INDEX UNIQ_IDENTIFIER_EMAIL (email), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB
@@ -87,9 +86,6 @@ final class Version20250603122830 extends AbstractMigration
         $this->addSql(<<<'SQL'
             ALTER TABLE seance ADD CONSTRAINT FK_DF7DFD0EC5C76018 FOREIGN KEY (cinemas_id) REFERENCES cinemas (id)
         SQL);
-        $this->addSql(<<<'SQL'
-            ALTER TABLE sieges ADD CONSTRAINT FK_38B0AE00B83297E7 FOREIGN KEY (reservation_id) REFERENCES reservations (id)
-        SQL);
     }
 
     public function down(Schema $schema): void
@@ -132,9 +128,6 @@ final class Version20250603122830 extends AbstractMigration
             ALTER TABLE seance DROP FOREIGN KEY FK_DF7DFD0EC5C76018
         SQL);
         $this->addSql(<<<'SQL'
-            ALTER TABLE sieges DROP FOREIGN KEY FK_38B0AE00B83297E7
-        SQL);
-        $this->addSql(<<<'SQL'
             DROP TABLE avis
         SQL);
         $this->addSql(<<<'SQL'
@@ -157,9 +150,6 @@ final class Version20250603122830 extends AbstractMigration
         SQL);
         $this->addSql(<<<'SQL'
             DROP TABLE seance
-        SQL);
-        $this->addSql(<<<'SQL'
-            DROP TABLE sieges
         SQL);
         $this->addSql(<<<'SQL'
             DROP TABLE user
