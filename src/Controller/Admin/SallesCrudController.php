@@ -17,6 +17,8 @@ class SallesCrudController extends AbstractCrudController
     {
         return [
             IntegerField::new('numeroSalle', 'Numéro de la salle'),
+            IntegerField::new('nombrePlaces', 'Nombre total de places')
+                ->setHelp('Ce champ doit être égal à Nombre de sièges PMR + Places disponibles.'),
             IntegerField::new('nombreSiege', 'Nombre total de sièges')
                 ->setHelp('Ce champ doit être égal à Sièges PMR + Places disponibles.'),
             IntegerField::new('nombreSiegePMR', 'Nombre de sièges PMR')

@@ -15,7 +15,7 @@ class Salles
     private ?int $id = null;
 
     #[ORM\Column(type: 'integer')]
-    private ?int $nombrePlaces = null;
+    private ?int $nombrePlaces;
 
     #[ORM\Column(type: 'integer')]
     private int $nombreSiege;
