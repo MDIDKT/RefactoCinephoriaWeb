@@ -8,6 +8,7 @@ use App\Entity\User;
 use App\Entity\Salles;
 use App\Entity\Seance;
 use App\Entity\Reservations;
+use DateTimeImmutable;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Faker\Factory;
@@ -66,11 +67,11 @@ class AppFixtures extends Fixture
             $seance->setCinemas($faker->randomElement($manager->getRepository(Cinemas::class)->findAll()));
             $seance->setFilms($faker->randomElement($manager->getRepository(Films::class)->findAll()));
             $seance->setNombrePlaces($faker->numberBetween(10, 100));
-            $seance->setHeureDebut(\DateTimeImmutable::createFromMutable(
+            $seance->setHeureDebut(DateTimeImmutable::createFromMutable(
                 $faker->dateTimeBetween('now', '+1 hour')
             ));
 
-            $seance->setHeureFin(\DateTimeImmutable::createFromMutable(
+            $seance->setHeureFin(DateTimeImmutable::createFromMutable(
                 $faker->dateTimeBetween('now', '+2 hours')
             ));
             $seance->setQualite($faker->randomElement(['2D', '3D', '4K']));
@@ -89,7 +90,7 @@ class AppFixtures extends Fixture
             $reservation->setPrixTotal($faker->randomFloat(2, 10, 100));
             $reservation->setSalle($faker->randomElement($manager->getRepository(Salles::class)->findAll()));
             $reservation->setUser($faker->randomElement($manager->getRepository(User::class)->findAll()));
-            $reservation->setDate(\DateTimeImmutable::createFromMutable(
+            $reservation->setDate(DateTimeImmutable::createFromMutable(
                 $faker->dateTimeBetween('now', '+1 month')
             ));
             $manager->persist($reservation);

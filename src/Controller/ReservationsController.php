@@ -7,6 +7,7 @@ namespace App\Controller;
 use App\Entity\Reservations;
 use App\Form\ReservationsType;
 use App\Repository\ReservationsRepository;
+use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -33,7 +34,7 @@ final class ReservationsController extends AbstractController
     ): Response
     {
         $reservation = new Reservations();
-        $reservation->setDate(new \DateTimeImmutable());
+        $reservation->setDate(new DateTimeImmutable());
         $form = $this->createForm(ReservationsType::class, $reservation);
         $form->handleRequest($request);
 
@@ -100,22 +101,10 @@ final class ReservationsController extends AbstractController
         }
 
         // 3. Réduction des places disponibles et sauvegarde
-        if ($requestedSeats > $placesDisponibles) {
-            $this->addFlash('error', sprintf(
-                'Impossible de réserver %d places. Seulement %d places disponibles.',
-                $requestedSeats,
-                $placesDisponibles
-            ));
-
-            return $this->render('reservations/new.html.twig', [
-                'reservation' => $reservation,
-                'form' => $this->createForm(ReservationsType::class, $reservation)->createView(),
-            ]);
-        }
         $salle->reservePlaces($requestedSeats);
 
         // 4. Calculer le prix total
-        $reservation->setPrixTotal($reservation->calculprixTotal($seance));
+        $reservation->setPrixTotal($reservation->calculprixTotal());
 
         $entityManager->persist($salle);
         $entityManager->persist($reservation);
@@ -127,70 +116,80 @@ final class ReservationsController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'app_reservations_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Reservations $reservation, EntityManagerInterface $entityManager): Response
+    public function edit(Request $request, Reservations $reservation, EntityManagerInterface $entityManager, ReservationsService $priceCalculator): Response
     {
+        // 1. Sauvegarde du nombre de places avant mise à jour par le formulaire
+        $initialReservedSeats = $reservation->getNombrePlaces();
+
+        // 2. Création et traitement du formulaire
         $form = $this->createForm(ReservationsType::class, $reservation);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $initialReservedSeats = $reservation->getNombrePlaces(); // Places réservées avant modification
-            $salle = $reservation->getSeances()->getSalle();
-
-            if (null !== $salle) {
-                // Vérifier si le nombre de places à libérer est valide
-                if ($initialReservedSeats > $salle->getPlacesOccupees()) {
-                    $this->addFlash('error', 'Impossible de libérer plus de places qu\'occupées.');
-
-                    return $this->render('reservations/edit.html.twig', [
-                        'reservation' => $reservation,
-                        'form' => $form->createView(),
-                    ]);
-                }
-
-                // Rétablir les places initiales avant de recalculer
-                $salle->libererPlaces($initialReservedSeats);
-
-                $newRequestedSeats = $reservation->getNombrePlaces();
-
-                // Validation du nouveau nombre de places demandées
-                $placesDisponibles = $salle->getNombreSiege()
-                    - $salle->getPlacesOccupees()
-                    - $salle->getNombreSiegePMR();
-
-                if ($newRequestedSeats > $placesDisponibles) {
-                    $this->addFlash('error', sprintf(
-                        'Modification impossible : vous demandez %d places, mais seulement %d sont disponibles.',
-                        $newRequestedSeats,
-                        $placesDisponibles
-                    ));
-
-                    return $this->render('reservations/edit.html.twig', [
-                        'reservation' => $reservation,
-                        'form' => $form->createView(),
-                    ]);
-                }
-
-                // Réserver les nouvelles places
-                $salle->reservePlaces($newRequestedSeats);
-
-                // Mettre à jour l'entité Reservation
-                $reservation->setPrixTotal($reservation->calculprixTotal($reservation->getSeances()));
-
-                $entityManager->persist($salle);
-                $entityManager->persist($reservation);
-                $entityManager->flush();
-
-                $this->addFlash('success', 'Réservation modifiée avec succès.');
-
-                return $this->redirectToRoute('app_reservations_index');
+            // 3. Récupération de la salle
+            $salle = $reservation->getSeances()?->getSalle();
+            if (null === $salle) {
+                $this->addFlash('error', 'Séance ou salle introuvable.');
+                return $this->render('reservations/edit.html.twig', [
+                    'reservation' => $reservation,
+                    'form' => $form->createView(),
+                ]);
             }
+
+            // 4. Vérification de la libération des anciennes places
+            if ($initialReservedSeats > $salle->getPlacesOccupees()) {
+                $this->addFlash('error', 'Impossible de libérer plus de places qu\'occupées.');
+                return $this->render('reservations/edit.html.twig', [
+                    'reservation' => $reservation,
+                    'form' => $form->createView(),
+                ]);
+            }
+            $salle->libererPlaces($initialReservedSeats);
+
+            // 5. Calcul du nouveau nombre de places demandées
+            $newRequestedSeats = $reservation->getNombrePlaces();
+            $placesDisponibles = $salle->getNombreSiege()
+                - $salle->getPlacesOccupees()
+                - $salle->getNombreSiegePMR();
+
+            if ($newRequestedSeats > $placesDisponibles) {
+                $this->addFlash('error', sprintf(
+                    'Modification impossible : vous demandez %d places, mais seulement %d sont disponibles.',
+                    $newRequestedSeats,
+                    $placesDisponibles
+                ));
+                return $this->render('reservations/edit.html.twig', [
+                    'reservation' => $reservation,
+                    'form' => $form->createView(),
+                ]);
+            }
+
+            // 6. Réservation des nouvelles places
+            $salle->reservePlaces($newRequestedSeats);
+
+            // 7. Mise à jour du prix via le service métier
+            $prixTotal = $priceCalculator->calculerPrixTotal(
+                $reservation->getSeances(),
+                $newRequestedSeats
+            );
+            $reservation->setPrixTotal($prixTotal);
+
+            // 8. Persistance et validation
+            // $entityManager->persist($salle); // facultatif si déjà géré
+            $entityManager->persist($reservation);
+            $entityManager->flush();
+
+            $this->addFlash('success', 'Réservation modifiée avec succès.');
+            return $this->redirectToRoute('app_reservations_index');
         }
 
+        // Affichage du formulaire non soumis ou en cas d’erreur de validation
         return $this->render('reservations/edit.html.twig', [
             'reservation' => $reservation,
-            'form' => $form,
+            'form' => $form->createView(),
         ]);
     }
+
 
     #[Route('/{id}', name: 'app_reservations_delete', methods: ['POST'])]
     public function delete(Request $request, Reservations $reservation, EntityManagerInterface $entityManager): Response

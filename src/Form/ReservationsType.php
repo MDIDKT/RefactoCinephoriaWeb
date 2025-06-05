@@ -47,7 +47,7 @@ class ReservationsType extends AbstractType
     {
         return [
             'class' => Seance::class,
-            'choice_label' => fn (Seance $seance) => $this->formatSeanceChoice($seance),
+            'choice_label' => fn(Seance $seance) => $this->formatSeanceChoice($seance),
             'label' => 'Choisir une séance',
             'attr' => ['class' => 'form-input mt-1 block w-full'],
             'placeholder' => 'Choisissez une séance valide',
