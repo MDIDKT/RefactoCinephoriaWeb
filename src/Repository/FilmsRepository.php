@@ -16,6 +16,7 @@ class FilmsRepository extends ServiceEntityRepository
         parent::__construct($registry, Films::class);
     }
 
+    /** @noinspection PhpMissingParentCallCommonInspection */
     public function findAll(): array
     {
         return $this->createQueryBuilder('f')

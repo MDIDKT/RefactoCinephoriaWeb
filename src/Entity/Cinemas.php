@@ -4,7 +4,6 @@ namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
 use App\Repository\CinemasRepository;
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
@@ -30,21 +29,9 @@ class Cinemas
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $horaire = null;
 
-    #[ORM\OneToMany(mappedBy: 'cinemas', targetEntity: Seance::class)]
-    private Collection $seance;
-
     #[ORM\ManyToMany(targetEntity: Films::class, mappedBy: 'cinemas')]
     private Collection $film;
 
-    #[ORM\OneToMany(mappedBy: 'cinemas', targetEntity: Reservations::class)]
-    private Collection $reservations;
-
-    public function __construct()
-    {
-        $this->seance = new ArrayCollection();
-        $this->film = new ArrayCollection();
-        $this->reservations = new ArrayCollection();
-    }
 
     public function getId(): ?int
     {
@@ -104,31 +91,6 @@ class Cinemas
         return $this;
     }
 
-    public function getSeance(): Collection
-    {
-        return $this->seance;
-    }
-
-    public function addSeance(Seance $seance): static
-    {
-        if (!$this->seance->contains($seance)) {
-            $this->seance->add($seance);
-            $seance->setCinemas($this);
-        }
-
-        return $this;
-    }
-
-    public function removeSeance(Seance $seance): static
-    {
-        if ($this->seance->removeElement($seance)) {
-            if ($seance->getCinemas() === $this) {
-                $seance->setCinemas(null);
-            }
-        }
-
-        return $this;
-    }
 
     public function getFilm(): Collection
     {
@@ -148,32 +110,6 @@ class Cinemas
     {
         if ($this->film->removeElement($film)) {
             $film->removeCinema($this);
-        }
-
-        return $this;
-    }
-
-    public function getReservations(): Collection
-    {
-        return $this->reservations;
-    }
-
-    public function addReservation(Reservations $reservation): static
-    {
-        if (!$this->reservations->contains($reservation)) {
-            $this->reservations->add($reservation);
-            $reservation->setCinemas($this);
-        }
-
-        return $this;
-    }
-
-    public function removeReservation(Reservations $reservation): static
-    {
-        if ($this->reservations->removeElement($reservation)) {
-            if ($reservation->getCinemas() === $this) {
-                $reservation->setCinemas(null);
-            }
         }
 
         return $this;

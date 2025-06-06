@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
 use App\Repository\FilmsRepository;
+use DateTime;
+use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
@@ -42,16 +44,8 @@ class Films
 
     #[ORM\Column]
     private ?float $note = null;
-
-    #[ORM\OneToMany(targetEntity: Seance::class, mappedBy: 'films')]
-    #[Groups(['films:read', 'films:write'])]
-    private Collection $seances;
-
     #[ORM\Column(length: 255)]
     private ?string $qualite = null;
-
-    #[ORM\OneToMany(targetEntity: Reservations::class, mappedBy: 'films', )]
-    private Collection $reservations;
 
     #[Vich\UploadableField(mapping: 'affiche', fileNameProperty: 'imageName', size: 'imageSize')]
     #[Groups(['films:read', 'films:write'])]
@@ -71,12 +65,10 @@ class Films
     private Collection $cinemas;
 
     #[ORM\Column(type: 'datetime', nullable: true)]
-    private ?\DateTimeInterface $createdAt = null;
+    private ?DateTimeInterface $createdAt = null;
 
     public function __construct()
     {
-        $this->seances = new ArrayCollection();
-        $this->reservations = new ArrayCollection();
         $this->avis = new ArrayCollection();
         $this->cinemas = new ArrayCollection();
     }
@@ -134,11 +126,6 @@ class Films
         return $this;
     }
 
-    public function getSeances(): Collection
-    {
-        return $this->seances;
-    }
-
     public function getCinemas(): Collection
     {
         return $this->cinemas;
@@ -187,7 +174,7 @@ class Films
 
         if ($imageFile) {
             // Mettre la date à jour si un nouveau fichier est chargé
-            $this->createdAt = new \DateTime('now');
+            $this->createdAt = new DateTime('now');
         }
 
         return $this;
@@ -235,24 +222,14 @@ class Films
         $this->avis = $avis;
     }
 
-    public function getCreatedAt(): ?\DateTimeInterface
+    public function getCreatedAt(): ?DateTimeInterface
     {
         return $this->createdAt;
     }
 
-    public function setCreatedAt(?\DateTimeInterface $createdAt): void
+    public function setCreatedAt(?DateTimeInterface $createdAt): void
     {
         $this->createdAt = $createdAt;
-    }
-
-    public function getReservations(): Collection
-    {
-        return $this->reservations;
-    }
-
-    public function setReservations(Collection $reservations): void
-    {
-        $this->reservations = $reservations;
     }
 
     public function __toString(): string

@@ -52,9 +52,6 @@ class FilmsCrudController extends AbstractCrudController
                 ->setUploadDir('public/images/films') // Chemin absolu où stocker les images
                 ->setRequired(false), // Champ facultatif
 
-            // Association avec les séances
-            AssociationField::new('seances', 'Séances Associées')->hideOnForm(),
-
             // Association avec les avis
             AssociationField::new('avis', 'Avis')->hideOnForm(),
 

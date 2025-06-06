@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\IncidentsRepository;
+use DateTimeInterface;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -18,7 +19,7 @@ class Incidents
     private ?string $description = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    private ?\DateTimeInterface $date = null;
+    private ?DateTimeInterface $date = null;
 
     #[ORM\ManyToOne(targetEntity: Salles::class, inversedBy: 'incidents')]
     #[ORM\JoinColumn(nullable: false)]
@@ -41,12 +42,12 @@ class Incidents
         return $this;
     }
 
-    public function getDate(): ?\DateTimeInterface
+    public function getDate(): ?DateTimeInterface
     {
         return $this->date;
     }
 
-    public function setDate(\DateTimeInterface $date): static
+    public function setDate(DateTimeInterface $date): static
     {
         $this->date = $date;
 
