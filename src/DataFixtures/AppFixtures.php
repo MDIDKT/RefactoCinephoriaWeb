@@ -14,12 +14,10 @@ class AppFixtures extends Fixture
 {
     public function load(ObjectManager $manager): void
     {
-        // $product = new Product();
-        // $manager->persist($product);
         $faker = Factory::create('fr_FR');
         $faker->unique(true);
 
-        for ($i = 0; $i < 10; ++$i) {
+        for ($i = 0; $i < 5; ++$i) {
             $cinema = new Cinemas();
             $cinema->setNom($faker->company);
             $cinema->setVille($faker->city());
@@ -39,7 +37,7 @@ class AppFixtures extends Fixture
             $manager->persist($film);
         }
 
-        for ($i = 0; $i < 10; ++$i) {
+        for ($i = 0; $i < 5; ++$i) {
             $user = new User();
             $user->setEmail($faker->email);
             $user->setPassword($faker->password);
@@ -49,12 +47,12 @@ class AppFixtures extends Fixture
             $manager->persist($user);
         }
 
-        for ($i = 0; $i < 10; ++$i) {
+        for ($i = 0; $i < 5; ++$i) {
             $salle = new Salles();
-            $salle->setNombrePlaces($faker->numberBetween(10, 100));
+            $salle->setNombrePlaces($faker->numberBetween(1, 100));
             $salle->setNombreSiege($faker->numberBetween(10, 100));
-            $salle->setNombreSiegePMR($faker->numberBetween(10, 100));
-            $salle->setNumeroSalle($faker->numberBetween(10, 100));
+            $salle->setNombreSiegePMR($faker->numberBetween(10, 50));
+            $salle->setNumeroSalle($faker->numberBetween(10, 10));
             $manager->persist($salle);
         }
 
