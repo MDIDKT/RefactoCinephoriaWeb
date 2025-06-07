@@ -1,7 +1,6 @@
-# config/packages/doctrine_migrations.yaml
 doctrine_migrations:
     migrations_paths:
         'DoctrineMigrations': '%kernel.project_dir%/migrations'
     storage:
         table_storage:
-            table_name: migration_versions
+            table_name: doctrine_migration_versions
