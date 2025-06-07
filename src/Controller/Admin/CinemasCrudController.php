@@ -2,7 +2,7 @@
 
 namespace App\Controller\Admin;
 
-use App\Entity\Cinemas;
+use App\Entity\Cinema;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 
@@ -10,7 +10,7 @@ class CinemasCrudController extends AbstractCrudController
 {
     public static function getEntityFqcn(): string
     {
-        return Cinemas::class;
+        return Cinema::class;
     }
 
     public function configureFields(string $pageName): iterable

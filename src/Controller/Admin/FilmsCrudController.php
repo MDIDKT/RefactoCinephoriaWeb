@@ -2,7 +2,7 @@
 
 namespace App\Controller\Admin;
 
-use App\Entity\Films;
+use App\Entity\Film;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
@@ -17,7 +17,7 @@ class FilmsCrudController extends AbstractCrudController
 {
     public static function getEntityFqcn(): string
     {
-        return Films::class;
+        return Film::class;
     }
 
     public function configureFields(string $pageName): iterable

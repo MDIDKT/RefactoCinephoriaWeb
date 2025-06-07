@@ -2,9 +2,9 @@
 
 namespace App\Controller\Admin;
 
-use App\Entity\Cinemas;
-use App\Entity\Films;
-use App\Entity\Salles;
+use App\Entity\Cinema;
+use App\Entity\Film;
+use App\Entity\Salle;
 use App\Entity\User;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
@@ -19,7 +19,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 class DashboardController extends AbstractDashboardController
 {
     #[Route('/admin', name: 'admin_index')]
-    #[isGranted('ROLE_ADMIN', message: 'Vous devez être administrateur pour accéder à cette page.')]
+   // #[isGranted('ROLE_ADMIN', message: 'Vous devez être administrateur pour accéder à cette page.')]
     public function index(): Response
     {
         try {
@@ -52,9 +52,9 @@ class DashboardController extends AbstractDashboardController
     /** @noinspection PhpMissingParentCallCommonInspection */
     public function configureMenuItems(): iterable
     {
-        yield MenuItem::linkToCrud('Cinémas', 'fas fa-building', Cinemas::class);
-        yield MenuItem::linkToCrud('Films', 'fas fa-film', Films::class);
-        yield MenuItem::linkToCrud('Salles', 'fas fa-chair', Salles::class);
+        yield MenuItem::linkToCrud('Cinémas', 'fas fa-building', Cinema::class);
+        yield MenuItem::linkToCrud('Films', 'fas fa-film', Film::class);
+        yield MenuItem::linkToCrud('Salles', 'fas fa-chair', Salle::class);
         yield MenuItem::linkToCrud('Utilisateurs', 'fas fa-users', User::class);
     }
 }
