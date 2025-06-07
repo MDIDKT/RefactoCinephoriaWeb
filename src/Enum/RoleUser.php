@@ -2,7 +2,7 @@
 
 namespace App\Enum;
 
-enum enumRoleUser: string
+enum RoleUser: string
 {
     case USER = 'ROLE_USER';
     case ADMIN = 'ROLE_ADMIN';
