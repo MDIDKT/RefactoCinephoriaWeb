@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Salle index{% endblock %}
+
+{% block body %}
+    <h1>Salle index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Numero</th>
+                <th>NombrePlace</th>
+                <th>Qualite</th>
+                <th>CreatedAt</th>
+                <th>UpdatedAt</th>
+                <th>Siege</th>
+                <th>SiegePMR</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for salle in salles %}
+            <tr>
+                <td>{{ salle.id }}</td>
+                <td>{{ salle.numero }}</td>
+                <td>{{ salle.nombrePlace }}</td>
+                <td>{{ salle.qualite }}</td>
+                <td>{{ salle.createdAt ? salle.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ salle.updatedAt ? salle.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ salle.siege }}</td>
+                <td>{{ salle.siegePMR }}</td>
+                <td>
+                    <a href="{{ path('app_salle_show', {'id': salle.id}) }}">show</a>
+                    <a href="{{ path('app_salle_edit', {'id': salle.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="9">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_salle_new') }}">Create new</a>
+{% endblock %}

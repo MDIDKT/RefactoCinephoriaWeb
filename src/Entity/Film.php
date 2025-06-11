@@ -3,12 +3,15 @@
 namespace App\Entity;
 
 use App\Repository\FilmRepository;
+use DateTime;
+use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: FilmRepository::class)]
+#[ORM\HasLifecycleCallbacks]
 class Film
 {
     #[ORM\Id]
@@ -31,11 +34,11 @@ class Film
     #[ORM\Column(nullable: true)]
     private ?int $imageSize = null;
 
-    #[ORM\Column]
-    private ?\DateTimeImmutable $createdAt = null;
+    #[ORM\Column (type: Types::DATETIME_IMMUTABLE)]
+    private ?DateTimeImmutable $createdAt = null;
 
-    #[ORM\Column]
-    private ?\DateTimeImmutable $updatedAt = null;
+    #[ORM\Column (type: Types::DATETIME_IMMUTABLE, nullable: true)]
+    private ?DateTimeImmutable $updatedAt = null;
 
     #[ORM\Column(nullable: true)]
     private ?bool $coupDeCoeur = null;
@@ -44,7 +47,7 @@ class Film
     private ?string $genre = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
-    private ?\DateTime $dateSortie = null;
+    private ?DateTime $dateSortie = null;
 
     /**
      * @var Collection<int, Seance>
@@ -129,28 +132,43 @@ class Film
         return $this;
     }
 
-    public function getCreatedAt(): ?\DateTimeImmutable
+    public function getCreatedAt(): ?DateTimeImmutable
     {
         return $this->createdAt;
     }
 
-    public function setCreatedAt(\DateTimeImmutable $createdAt): static
+    public function setCreatedAt(DateTimeImmutable $createdAt): static
     {
         $this->createdAt = $createdAt;
 
         return $this;
     }
 
-    public function getUpdatedAt(): ?\DateTimeImmutable
+    public function getUpdatedAt(): ?DateTimeImmutable
     {
         return $this->updatedAt;
     }
 
-    public function setUpdatedAt(\DateTimeImmutable $updatedAt): static
+    public function setUpdatedAt(DateTimeImmutable $updatedAt): static
     {
         $this->updatedAt = $updatedAt;
 
         return $this;
+    }
+
+    #[ORM\PrePersist]
+    public function prePersist(): void
+    {
+        $now = new DateTimeImmutable();
+        $this->createdAt = $this->createdAt ?? $now;
+        $this->updatedAt = $now;
+
+    }
+
+    #[ORM\PreUpdate]
+    public function preUpdate(): void
+    {
+        $this->updatedAt = new DateTimeImmutable();
     }
 
     public function isCoupDeCoeur(): ?bool
@@ -177,12 +195,12 @@ class Film
         return $this;
     }
 
-    public function getDateSortie(): ?\DateTime
+    public function getDateSortie(): ?DateTime
     {
         return $this->dateSortie;
     }
 
-    public function setDateSortie(?\DateTime $dateSortie): static
+    public function setDateSortie(?DateTime $dateSortie): static
     {
         $this->dateSortie = $dateSortie;
 
@@ -194,13 +212,13 @@ class Film
      */
     public function getSeances(): Collection
     {
-        return $this->seances;
+        return $this->seance;
     }
 
     public function addSeance(Seance $seance): static
     {
-        if (!$this->seances->contains($seance)) {
-            $this->seances->add($seance);
+        if (!$this->seance->contains($seance)) {
+            $this->seance->add($seance);
             $seance->setFilm($this);
         }
 
@@ -209,7 +227,7 @@ class Film
 
     public function removeSeance(Seance $seance): static
     {
-        if ($this->seances->removeElement($seance)) {
+        if ($this->seance->removeElement($seance)) {
             // set the owning side to null (unless already changed)
             if ($seance->getFilm() === $this) {
                 $seance->setFilm(null);

@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Cinema index{% endblock %}
+
+{% block body %}
+    <h1>Cinema index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Nom</th>
+                <th>Adresse</th>
+                <th>Telephone</th>
+                <th>Horaire</th>
+                <th>CreatedAt</th>
+                <th>UpdatedAt</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for cinema in cinemas %}
+            <tr>
+                <td>{{ cinema.id }}</td>
+                <td>{{ cinema.nom }}</td>
+                <td>{{ cinema.adresse }}</td>
+                <td>{{ cinema.telephone }}</td>
+                <td>{{ cinema.horaire }}</td>
+                <td>{{ cinema.createdAt ? cinema.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ cinema.updatedAt ? cinema.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>
+                    <a href="{{ path('app_cinema_show', {'id': cinema.id}) }}">show</a>
+                    <a href="{{ path('app_cinema_edit', {'id': cinema.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="8">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_cinema_new') }}">Create new</a>
+{% endblock %}

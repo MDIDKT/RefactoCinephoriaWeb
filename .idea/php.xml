@@ -1,20 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="MessDetector">
+    <phpmd_settings>
+      <phpmd_by_interpreter asDefaultInterpreter="true" interpreter_id="a6dcc759-6bd9-455a-9795-34a0e2546246" timeout="30000" />
+    </phpmd_settings>
+  </component>
   <component name="MessDetectorOptionsConfiguration">
     <option name="transferred" value="true" />
   </component>
   <component name="PHPCSFixerOptionsConfiguration">
-    <option name="codingStandard" value="Custom" />
+    <option name="codingStandard" value="Symfony" />
     <option name="rulesetPath" value="$PROJECT_DIR$/.php-cs-fixer.dist.php" />
     <option name="transferred" value="true" />
   </component>
   <component name="PHPCodeSnifferOptionsConfiguration">
     <option name="highlightLevel" value="WARNING" />
+    <option name="showSniffs" value="true" />
     <option name="transferred" value="true" />
   </component>
   <component name="PhpCSFixer">
     <phpcsfixer_settings>
-      <phpcs_fixer_by_interpreter asDefaultInterpreter="true" interpreter_id="a6dcc759-6bd9-455a-9795-34a0e2546246" timeout="30000" />
+      <phpcs_fixer_by_interpreter asDefaultInterpreter="true" interpreter_id="a6dcc759-6bd9-455a-9795-34a0e2546246" standards="PSR1;PSR2;Symfony;DoctrineAnnotation;PHP70Migration;PHP71Migration" tool_path="/Users/diakite/RefactoCinephoriaWeb/vendor/bin/php-cs-fixer" timeout="30000" />
       <PhpCSFixerConfiguration tool_path="$PROJECT_DIR$/vendor/bin/php-cs-fixer" />
     </phpcsfixer_settings>
   </component>
@@ -172,6 +178,61 @@
       <path value="$PROJECT_DIR$/vendor/sebastian/code-unit-reverse-lookup" />
       <path value="$PROJECT_DIR$/vendor/sebastian/diff" />
       <path value="$PROJECT_DIR$/vendor/sebastian/recursion-context" />
+      <path value="$PROJECT_DIR$/vendor/api-platform/documentation" />
+      <path value="$PROJECT_DIR$/vendor/api-platform/doctrine-common" />
+      <path value="$PROJECT_DIR$/vendor/api-platform/serializer" />
+      <path value="$PROJECT_DIR$/vendor/api-platform/validator" />
+      <path value="$PROJECT_DIR$/vendor/api-platform/state" />
+      <path value="$PROJECT_DIR$/vendor/api-platform/openapi" />
+      <path value="$PROJECT_DIR$/vendor/api-platform/doctrine-orm" />
+      <path value="$PROJECT_DIR$/vendor/api-platform/symfony" />
+      <path value="$PROJECT_DIR$/vendor/api-platform/jsonld" />
+      <path value="$PROJECT_DIR$/vendor/api-platform/http-cache" />
+      <path value="$PROJECT_DIR$/vendor/api-platform/metadata" />
+      <path value="$PROJECT_DIR$/vendor/api-platform/hydra" />
+      <path value="$PROJECT_DIR$/vendor/api-platform/json-schema" />
+      <path value="$PROJECT_DIR$/vendor/doctrine/common" />
+      <path value="$PROJECT_DIR$/vendor/symfony/apache-pack" />
+      <path value="$PROJECT_DIR$/vendor/twig/html-extra" />
+      <path value="$PROJECT_DIR$/vendor/symfonycasts 2/verify-email-bundle" />
+      <path value="$PROJECT_DIR$/vendor/react/event-loop" />
+      <path value="$PROJECT_DIR$/vendor/symfonycasts 2/tailwind-bundle" />
+      <path value="$PROJECT_DIR$/vendor/react/cache" />
+      <path value="$PROJECT_DIR$/vendor/react/stream" />
+      <path value="$PROJECT_DIR$/vendor/react/promise" />
+      <path value="$PROJECT_DIR$/vendor/react/dns" />
+      <path value="$PROJECT_DIR$/vendor/react/socket" />
+      <path value="$PROJECT_DIR$/vendor/react/child-process" />
+      <path value="$PROJECT_DIR$/vendor/fakerphp 2/faker" />
+      <path value="$PROJECT_DIR$/vendor/friendsofphp/php-cs-fixer" />
+      <path value="$PROJECT_DIR$/vendor/monolog 2/monolog" />
+      <path value="$PROJECT_DIR$/vendor/clue/ndjson-react" />
+      <path value="$PROJECT_DIR$/vendor/doctrine 2/migrations" />
+      <path value="$PROJECT_DIR$/vendor/webmozart 2/assert" />
+      <path value="$PROJECT_DIR$/vendor/doctrine 2/doctrine-migrations-bundle" />
+      <path value="$PROJECT_DIR$/vendor/doctrine 2/cache" />
+      <path value="$PROJECT_DIR$/vendor/doctrine 2/data-fixtures" />
+      <path value="$PROJECT_DIR$/vendor/doctrine 2/dbal" />
+      <path value="$PROJECT_DIR$/vendor/doctrine 2/lexer" />
+      <path value="$PROJECT_DIR$/vendor/doctrine 2/persistence" />
+      <path value="$PROJECT_DIR$/vendor/nelmio 2/cors-bundle" />
+      <path value="$PROJECT_DIR$/vendor/doctrine 2/inflector" />
+      <path value="$PROJECT_DIR$/vendor/doctrine 2/instantiator" />
+      <path value="$PROJECT_DIR$/vendor/doctrine 2/doctrine-fixtures-bundle" />
+      <path value="$PROJECT_DIR$/vendor/doctrine 2/event-manager" />
+      <path value="$PROJECT_DIR$/vendor/doctrine 2/orm" />
+      <path value="$PROJECT_DIR$/vendor/fidry/cpu-core-counter" />
+      <path value="$PROJECT_DIR$/vendor/doctrine 2/sql-formatter" />
+      <path value="$PROJECT_DIR$/vendor/doctrine 2/collections" />
+      <path value="$PROJECT_DIR$/vendor/doctrine 2/doctrine-bundle" />
+      <path value="$PROJECT_DIR$/vendor/doctrine 2/deprecations" />
+      <path value="$PROJECT_DIR$/vendor/myclabs 2/deep-copy" />
+      <path value="$PROJECT_DIR$/vendor/egulias 2/email-validator" />
+      <path value="$PROJECT_DIR$/vendor/evenement/evenement" />
+      <path value="$PROJECT_DIR$/vendor/willdurand 2/negotiation" />
+      <path value="$PROJECT_DIR$/vendor/vich 2/uploader-bundle" />
+      <path value="$PROJECT_DIR$/vendor/nikic 2/php-parser" />
+      <path value="$PROJECT_DIR$/vendor/api-platform 2/core" />
     </include_path>
   </component>
   <component name="PhpProjectSharedConfiguration" php_language_level="8.3" />

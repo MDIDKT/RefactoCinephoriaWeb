@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\ContactRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use DateTime;
 
 #[ORM\Entity(repositoryClass: ContactRepository::class)]
 class Contact
@@ -27,7 +28,7 @@ class Contact
     private ?string $contenu = null;
 
     #[ORM\Column(nullable: true)]
-    private ?\DateTime $date = null;
+    private ?DateTime $date = null;
 
     #[ORM\Column(nullable: true)]
     private ?bool $isVerified = null;
@@ -85,12 +86,12 @@ class Contact
         return $this;
     }
 
-    public function getDate(): ?\DateTime
+    public function getDate(): ?DateTime
     {
         return $this->date;
     }
 
-    public function setDate(?\DateTime $date): static
+    public function setDate(?DateTime $date): static
     {
         $this->date = $date;
 

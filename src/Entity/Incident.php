@@ -6,6 +6,7 @@ use App\Enum\IncidentStatus;
 use App\Repository\IncidentRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use DateTimeImmutable;
 
 #[ORM\Entity(repositoryClass: IncidentRepository::class)]
 class Incident
@@ -30,10 +31,10 @@ class Incident
     #[ORM\Column(type: Types::SIMPLE_ARRAY, enumType: IncidentStatus::class)]
     private array $status = [];
 
-    #[ORM\Column]
+    #[ORM\Column (type: Types::DATETIME_IMMUTABLE)]
     private ?\DateTimeImmutable $createdAt = null;
 
-    #[ORM\Column]
+    #[ORM\Column (type: Types::DATETIME_IMMUTABLE, nullable: true)]
     private ?\DateTimeImmutable $updatedAt = null;
 
     public function getId(): ?int
@@ -126,5 +127,20 @@ class Incident
         $this->updatedAt = $updatedAt;
 
         return $this;
+    }
+
+    #[ORM\PrePersist]
+    public function prePersist(): void
+    {
+        $now = new DateTimeImmutable();
+        $this->createdAt = $this->createdAt ?? $now;
+        $this->updatedAt = $now;
+
+    }
+
+    #[ORM\PreUpdate]
+    public function preUpdate(): void
+    {
+        $this->updatedAt = new DateTimeImmutable();
     }
 }

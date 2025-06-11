@@ -1,0 +1,62 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Film{% endblock %}
+
+{% block body %}
+    <h1>Film</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ film.id }}</td>
+            </tr>
+            <tr>
+                <th>Titre</th>
+                <td>{{ film.titre }}</td>
+            </tr>
+            <tr>
+                <th>Description</th>
+                <td>{{ film.description }}</td>
+            </tr>
+            <tr>
+                <th>AgeMinimum</th>
+                <td>{{ film.ageMinimum }}</td>
+            </tr>
+            <tr>
+                <th>ImageName</th>
+                <td>{{ film.imageName }}</td>
+            </tr>
+            <tr>
+                <th>ImageSize</th>
+                <td>{{ film.imageSize }}</td>
+            </tr>
+            <tr>
+                <th>CreatedAt</th>
+                <td>{{ film.createdAt ? film.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>UpdatedAt</th>
+                <td>{{ film.updatedAt ? film.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>CoupDeCoeur</th>
+                <td>{{ film.coupDeCoeur ? 'Yes' : 'No' }}</td>
+            </tr>
+            <tr>
+                <th>Genre</th>
+                <td>{{ film.genre }}</td>
+            </tr>
+            <tr>
+                <th>DateSortie</th>
+                <td>{{ film.dateSortie ? film.dateSortie|date('Y-m-d') : '' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_film_index') }}">back to list</a>
+
+    <a href="{{ path('app_film_edit', {'id': film.id}) }}">edit</a>
+
+    {{ include('film/_delete_form.html.twig') }}
+{% endblock %}

@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\SeanceRepository;
+use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: SeanceRepository::class)]
@@ -14,18 +15,18 @@ class Seance
     private ?int $id = null;
 
     #[ORM\Column]
-    private ?\DateTimeImmutable $heureDebut = null;
+    private ?DateTimeImmutable $heureDebut = null;
 
     #[ORM\Column(nullable: true)]
-    private ?\DateTimeImmutable $heureFin = null;
+    private ?DateTimeImmutable $heureFin = null;
 
-    #[ORM\ManyToOne(inversedBy: 'seances')]
+    #[ORM\ManyToOne(inversedBy: 'seance')]
     private ?Cinema $cinema = null;
 
-    #[ORM\ManyToOne(inversedBy: 'seances')]
+    #[ORM\ManyToOne(inversedBy: 'seance')]
     private ?Salle $salle = null;
 
-    #[ORM\ManyToOne(inversedBy: 'seances')]
+    #[ORM\ManyToOne(inversedBy: 'seance')]
     private ?Film $film = null;
 
     public function getId(): ?int
@@ -33,24 +34,24 @@ class Seance
         return $this->id;
     }
 
-    public function getHeureDebut(): ?\DateTimeImmutable
+    public function getHeureDebut(): ?DateTimeImmutable
     {
         return $this->heureDebut;
     }
 
-    public function setHeureDebut(\DateTimeImmutable $heureDebut): static
+    public function setHeureDebut(DateTimeImmutable $heureDebut): static
     {
         $this->heureDebut = $heureDebut;
 
         return $this;
     }
 
-    public function getHeureFin(): ?\DateTimeImmutable
+    public function getHeureFin(): ?DateTimeImmutable
     {
         return $this->heureFin;
     }
 
-    public function setHeureFin(?\DateTimeImmutable $heureFin): static
+    public function setHeureFin(?DateTimeImmutable $heureFin): static
     {
         $this->heureFin = $heureFin;
 

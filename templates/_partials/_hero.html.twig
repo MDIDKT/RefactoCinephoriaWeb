@@ -11,13 +11,15 @@
         </div>
     </div>
     <div class="w-full flex flex-col justify-center lg:flex-row lg:items-start">
-        <div class="w-full lg:w-1/2 flex flex-col items-center lg:items-start lg:flex-shrink-0 lg:my-auto">
+        {# <div class="w-full lg:w-1/2 flex flex-col items-center lg:items-start lg:flex-shrink-0 lg:my-auto">
             <h1 class="text-5xl font-bold text-gray-900 leading-tight mb-3 text-center lg:text-left">Responsive left-aligned hero with image</h1>
             <p class="text-lg text-gray-600 mb-6 text-center lg:text-left">
                 Quickly design and customize responsive mobile-first sites with Tailwind CSS, the world’s most popular utility-first framework, featuring responsive design, extensive prebuilt components, and a powerful ecosystem.
             </p>
-        </div>
-        <div class="w-full xl:w-1/2 lg:w-2/3">
+        </div> #}
+
+        <div class="w-full xl:w-1/2 lg:w-2/3 bg-gray-200 rounded-lg shadow-lg p-6">
+            <h2 class="text-3xl font-bold mb-4 text-gray-800">Carousel derniers films</h2>
             {% include '_partials/_carousel.html.twig' %}
         </div>
     </div>

@@ -14,12 +14,13 @@ use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 use Psr\Container\ContainerExceptionInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Http\Attribute\IsGranted;
+
+//use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 class DashboardController extends AbstractDashboardController
 {
     #[Route('/admin', name: 'admin_index')]
-   // #[isGranted('ROLE_ADMIN', message: 'Vous devez être administrateur pour accéder à cette page.')]
+    // #[isGranted('ROLE_ADMIN', message: 'Vous devez être administrateur pour accéder à cette page.')]
     public function index(): Response
     {
         try {
@@ -29,7 +30,7 @@ class DashboardController extends AbstractDashboardController
             );
         } catch (ContainerExceptionInterface) {
             // Gérer l'exception si le service AdminUrlGenerator n'est pas disponible
-            return $this->render('/admin', [
+            return $this->render('home/index.html.twig', [
                 'message' => 'Le tableau de bord d\'administration est indisponible pour le moment.',
             ]);
         }
@@ -52,7 +53,7 @@ class DashboardController extends AbstractDashboardController
     /** @noinspection PhpMissingParentCallCommonInspection */
     public function configureMenuItems(): iterable
     {
-        yield MenuItem::linkToCrud('Cinémas', 'fas fa-building', Cinema::class);
+        yield MenuItem::linkToCrud('Cinéma', 'fas fa-building', Cinema::class);
         yield MenuItem::linkToCrud('Films', 'fas fa-film', Film::class);
         yield MenuItem::linkToCrud('Salles', 'fas fa-chair', Salle::class);
         yield MenuItem::linkToCrud('Utilisateurs', 'fas fa-users', User::class);
