@@ -9,7 +9,6 @@ enum IncidentStatus: string
     case RESOLVED = 'resolved';
     case CLOSED = 'closed';
 
-
     public function label(): string
     {
         return match ($this) {

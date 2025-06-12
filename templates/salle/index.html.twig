@@ -12,8 +12,6 @@
                 <th>Numero</th>
                 <th>NombrePlace</th>
                 <th>Qualite</th>
-                <th>CreatedAt</th>
-                <th>UpdatedAt</th>
                 <th>Siege</th>
                 <th>SiegePMR</th>
                 <th>actions</th>
@@ -26,13 +24,10 @@
                 <td>{{ salle.numero }}</td>
                 <td>{{ salle.nombrePlace }}</td>
                 <td>{{ salle.qualite }}</td>
-                <td>{{ salle.createdAt ? salle.createdAt|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ salle.updatedAt ? salle.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
                 <td>{{ salle.siege }}</td>
                 <td>{{ salle.siegePMR }}</td>
                 <td>
                     <a href="{{ path('app_salle_show', {'id': salle.id}) }}">show</a>
-                    <a href="{{ path('app_salle_edit', {'id': salle.id}) }}">edit</a>
                 </td>
             </tr>
         {% else %}

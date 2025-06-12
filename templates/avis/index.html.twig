@@ -7,15 +7,13 @@
 
     <table class="table">
         <thead>
-            <tr>
-                <th>Id</th>
-                <th>Note</th>
-                <th>Commentaire</th>
-                <th>IsVerified</th>
-                <th>CreatedAt</th>
-                <th>UpdatedAt</th>
-                <th>actions</th>
-            </tr>
+        <tr>
+            <th>Id</th>
+            <th>Note</th>
+            <th>Commentaire</th>
+            <th>IsVerified</th>
+            <th>actions</th>
+        </tr>
         </thead>
         <tbody>
         {% for avi in avis %}
@@ -24,11 +22,8 @@
                 <td>{{ avi.note }}</td>
                 <td>{{ avi.commentaire }}</td>
                 <td>{{ avi.isVerified ? 'Yes' : 'No' }}</td>
-                <td>{{ avi.createdAt ? avi.createdAt|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ avi.updatedAt ? avi.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
                 <td>
                     <a href="{{ path('app_avis_show', {'id': avi.id}) }}">show</a>
-                    <a href="{{ path('app_avis_edit', {'id': avi.id}) }}">edit</a>
                 </td>
             </tr>
         {% else %}

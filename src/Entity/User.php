@@ -4,11 +4,12 @@ namespace App\Entity;
 
 use App\Enum\RoleUser;
 use App\Repository\UserRepository;
-use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use App\Entity\Traits\IDTrait;
+use App\Entity\Traits\TimestampTrait;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -17,18 +18,12 @@ use Symfony\Component\Security\Core\User\UserInterface;
 #[ORM\HasLifecycleCallbacks]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
-    private ?int $id = null;
+    use IDTrait;
+    use TimestampTrait;
 
     #[ORM\Column(length: 180)]
     private ?string $email = null;
 
-
-    /**
-     * @var string The hashed password
-     */
     #[ORM\Column (length: 255)]
     private ?string $password = null;
 
@@ -40,12 +35,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column (type: Types::BOOLEAN)]
     private ?bool $isVerified = false;
-
-    #[ORM\Column (type: Types::DATETIME_IMMUTABLE)]
-    private ?DateTimeImmutable $createdAt = null;
-
-    #[ORM\Column (type: Types::DATETIME_IMMUTABLE, nullable: true)]
-    private ?DateTimeImmutable $updatedAt = null;
 
     /**
      * @var Collection<int, Avis>
@@ -59,8 +48,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: Incident::class, mappedBy: 'Employee')]
     private Collection $incidents;
 
-    #[ORM\Column(type: Types::SIMPLE_ARRAY)]
-    private array $roles = [];
+    #[ORM\Column(type: 'string', enumType: RoleUser::class, options: ['default' => RoleUser::USER->value])]
+    private RoleUser $roles = RoleUser::USER;
 
     public function __construct()
     {
@@ -163,45 +152,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getCreatedAt(): ?DateTimeImmutable
-    {
-        return $this->createdAt;
-    }
-
-    public function setCreatedAt(DateTimeImmutable $createdAt): static
-    {
-        $this->createdAt = $createdAt;
-
-        return $this;
-    }
-
-    public function getUpdatedAt(): ?DateTimeImmutable
-    {
-        return $this->updatedAt;
-    }
-
-    public function setUpdatedAt(DateTimeImmutable $updatedAt): static
-    {
-        $this->updatedAt = $updatedAt;
-
-        return $this;
-    }
-
-    #[ORM\PrePersist]
-    public function prePersist(): void
-    {
-        $now = new DateTimeImmutable();
-        $this->createdAt = $this->createdAt ?? $now;
-        $this->updatedAt = $now;
-
-    }
-
-    #[ORM\PreUpdate]
-    public function preUpdate(): void
-    {
-        $this->updatedAt = new DateTimeImmutable();
-    }
-
     /**
      * @return Collection<int, Avis>
      */
@@ -262,18 +212,20 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    /**
-     * @return RoleUser[]
-     */
     public function getRoles(): array
     {
-        return $this->roles;
+        return [$this->roles->value];
     }
 
-    public function setRoles(array $roles): static
+    public function setRoles(RoleUser $roles): static
     {
         $this->roles = $roles;
 
         return $this;
+    }
+
+    public function __toString(): string
+    {
+        return $this->getUserIdentifier();
     }
 }

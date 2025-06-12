@@ -3,19 +3,18 @@
 namespace App\Entity;
 
 use App\Repository\SalleRepository;
-use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use App\Entity\Traits\IDTrait;
+use App\Entity\Traits\TimestampTrait;
 
 #[ORM\Entity(repositoryClass: SalleRepository::class)]
 #[ORM\HasLifecycleCallbacks]
 class Salle
 {
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
-    private ?int $id = null;
+    use IDTrait;
+    use TimestampTrait;
 
     #[ORM\Column]
     private ?int $numero = null;
@@ -25,12 +24,6 @@ class Salle
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $qualite = null;
-
-    #[ORM\Column]
-    private ?DateTimeImmutable $createdAt = null;
-
-    #[ORM\Column]
-    private ?DateTimeImmutable $updatedAt = null;
 
     #[ORM\Column]
     private ?int $siege = null;
@@ -95,45 +88,6 @@ class Salle
         $this->qualite = $qualite;
 
         return $this;
-    }
-
-    public function getCreatedAt(): ?DateTimeImmutable
-    {
-        return $this->createdAt;
-    }
-
-    public function setCreatedAt(DateTimeImmutable $createdAt): static
-    {
-        $this->createdAt = $createdAt;
-
-        return $this;
-    }
-
-    public function getUpdatedAt(): ?DateTimeImmutable
-    {
-        return $this->updatedAt;
-    }
-
-    public function setUpdatedAt(DateTimeImmutable $updatedAt): static
-    {
-        $this->updatedAt = $updatedAt;
-
-        return $this;
-    }
-
-    #[ORM\PrePersist]
-    public function prePersist(): void
-    {
-        $now = new DateTimeImmutable();
-        $this->createdAt = $this->createdAt ?? $now;
-        $this->updatedAt = $now;
-
-    }
-
-    #[ORM\PreUpdate]
-    public function preUpdate(): void
-    {
-        $this->updatedAt = new DateTimeImmutable();
     }
 
     public function getSiege(): ?int

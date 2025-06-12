@@ -16,12 +16,6 @@ class CinemaForm extends AbstractType
             ->add('adresse')
             ->add('telephone')
             ->add('horaire')
-            ->add('createdAt', null, [
-                'widget' => 'single_text'
-            ])
-            ->add('updatedAt', null, [
-                'widget' => 'single_text'
-            ])
         ;
     }
 

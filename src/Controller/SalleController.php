@@ -49,33 +49,4 @@ final class SalleController extends AbstractController
             'salle' => $salle,
         ]);
     }
-
-    #[Route('/{id}/edit', name: 'app_salle_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Salle $salle, EntityManagerInterface $entityManager): Response
-    {
-        $form = $this->createForm(SalleForm::class, $salle);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->flush();
-
-            return $this->redirectToRoute('app_salle_index', [], Response::HTTP_SEE_OTHER);
-        }
-
-        return $this->render('salle/edit.html.twig', [
-            'salle' => $salle,
-            'form' => $form,
-        ]);
-    }
-
-    #[Route('/{id}', name: 'app_salle_delete', methods: ['POST'])]
-    public function delete(Request $request, Salle $salle, EntityManagerInterface $entityManager): Response
-    {
-        if ($this->isCsrfTokenValid('delete'.$salle->getId(), $request->getPayload()->getString('_token'))) {
-            $entityManager->remove($salle);
-            $entityManager->flush();
-        }
-
-        return $this->redirectToRoute('app_salle_index', [], Response::HTTP_SEE_OTHER);
-    }
 }

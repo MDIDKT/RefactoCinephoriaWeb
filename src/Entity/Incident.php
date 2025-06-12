@@ -4,17 +4,18 @@ namespace App\Entity;
 
 use App\Enum\IncidentStatus;
 use App\Repository\IncidentRepository;
+use DateTimeImmutable;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use DateTimeImmutable;
+use App\Entity\Traits\IDTrait;
+use App\Entity\Traits\TimestampTrait;
 
 #[ORM\Entity(repositoryClass: IncidentRepository::class)]
+#[ORM\HasLifecycleCallbacks]
 class Incident
 {
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
-    private ?int $id = null;
+    use IDTrait;
+    use TimestampTrait;
 
     #[ORM\ManyToOne(inversedBy: 'incidents')]
     private ?User $Employee = null;
@@ -23,19 +24,13 @@ class Incident
     private ?Salle $salle = null;
 
     #[ORM\Column]
-    private ?\DateTimeImmutable $date = null;
+    private ?DateTimeImmutable $date = null;
 
     #[ORM\Column(type: Types::TEXT)]
     private ?string $description = null;
 
-    #[ORM\Column(type: Types::SIMPLE_ARRAY, enumType: IncidentStatus::class)]
-    private array $status = [];
-
-    #[ORM\Column (type: Types::DATETIME_IMMUTABLE)]
-    private ?\DateTimeImmutable $createdAt = null;
-
-    #[ORM\Column (type: Types::DATETIME_IMMUTABLE, nullable: true)]
-    private ?\DateTimeImmutable $updatedAt = null;
+    #[ORM\Column(type: 'string', enumType: IncidentStatus::class, options: ['default' => IncidentStatus::OPEN->value])]
+    private IncidentStatus $status = IncidentStatus::OPEN;
 
     public function getId(): ?int
     {
@@ -66,12 +61,12 @@ class Incident
         return $this;
     }
 
-    public function getDate(): ?\DateTimeImmutable
+    public function getDate(): ?DateTimeImmutable
     {
         return $this->date;
     }
 
-    public function setDate(\DateTimeImmutable $date): static
+    public function setDate(DateTimeImmutable $date): static
     {
         $this->date = $date;
 
@@ -90,57 +85,15 @@ class Incident
         return $this;
     }
 
-    /**
-     * @return IncidentStatus[]
-     */
-    public function getStatus(): array
+    public function getStatus(): IncidentStatus
     {
         return $this->status;
     }
 
-    public function setStatus(array $status): static
+    public function setStatus(IncidentStatus $status): static
     {
         $this->status = $status;
 
         return $this;
-    }
-
-    public function getCreatedAt(): ?\DateTimeImmutable
-    {
-        return $this->createdAt;
-    }
-
-    public function setCreatedAt(\DateTimeImmutable $createdAt): static
-    {
-        $this->createdAt = $createdAt;
-
-        return $this;
-    }
-
-    public function getUpdatedAt(): ?\DateTimeImmutable
-    {
-        return $this->updatedAt;
-    }
-
-    public function setUpdatedAt(\DateTimeImmutable $updatedAt): static
-    {
-        $this->updatedAt = $updatedAt;
-
-        return $this;
-    }
-
-    #[ORM\PrePersist]
-    public function prePersist(): void
-    {
-        $now = new DateTimeImmutable();
-        $this->createdAt = $this->createdAt ?? $now;
-        $this->updatedAt = $now;
-
-    }
-
-    #[ORM\PreUpdate]
-    public function preUpdate(): void
-    {
-        $this->updatedAt = new DateTimeImmutable();
     }
 }

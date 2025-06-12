@@ -7,40 +7,35 @@
 
     <table class="table">
         <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ contact.id }}</td>
-            </tr>
-            <tr>
-                <th>Nom</th>
-                <td>{{ contact.nom }}</td>
-            </tr>
-            <tr>
-                <th>Email</th>
-                <td>{{ contact.email }}</td>
-            </tr>
-            <tr>
-                <th>Sujet</th>
-                <td>{{ contact.sujet }}</td>
-            </tr>
-            <tr>
-                <th>Contenu</th>
-                <td>{{ contact.contenu }}</td>
-            </tr>
-            <tr>
-                <th>Date</th>
-                <td>{{ contact.date ? contact.date|date('Y-m-d H:i:s') : '' }}</td>
-            </tr>
-            <tr>
-                <th>IsVerified</th>
-                <td>{{ contact.isVerified ? 'Yes' : 'No' }}</td>
-            </tr>
+        <tr>
+            <th>Id</th>
+            <td>{{ contact.id }}</td>
+        </tr>
+        <tr>
+            <th>Nom</th>
+            <td>{{ contact.nom }}</td>
+        </tr>
+        <tr>
+            <th>Email</th>
+            <td>{{ contact.email }}</td>
+        </tr>
+        <tr>
+            <th>Sujet</th>
+            <td>{{ contact.sujet }}</td>
+        </tr>
+        <tr>
+            <th>Contenu</th>
+            <td>{{ contact.contenu }}</td>
+        </tr>
+        <tr>
+            <th>Date</th>
+            <td>{{ contact.date ? contact.date|date('Y-m-d H:i:s') : '' }}</td>
+        </tr>
+        <tr>
+            <th>IsVerified</th>
+            <td>{{ contact.isVerified ? 'Yes' : 'No' }}</td>
+        </tr>
         </tbody>
     </table>
 
-    <a href="{{ path('app_contact_index') }}">back to list</a>
-
-    <a href="{{ path('app_contact_edit', {'id': contact.id}) }}">edit</a>
-
-    {{ include('contact/_delete_form.html.twig') }}
 {% endblock %}

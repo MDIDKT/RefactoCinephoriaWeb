@@ -7,38 +7,29 @@
 
     <table class="table">
         <thead>
-            <tr>
-                <th>Id</th>
-                <th>Titre</th>
-                <th>Description</th>
-                <th>AgeMinimum</th>
-                <th>ImageName</th>
-                <th>ImageSize</th>
-                <th>CreatedAt</th>
-                <th>UpdatedAt</th>
-                <th>CoupDeCoeur</th>
-                <th>Genre</th>
-                <th>DateSortie</th>
-                <th>actions</th>
-            </tr>
+        <tr>
+            <th>Titre</th>
+            <th>Description</th>
+            <th>AgeMinimum</th>
+            <th>ImageName</th>
+            <th>CoupDeCoeur</th>
+            <th>Genre</th>
+            <th>DateSortie</th>
+            <th>actions</th>
+        </tr>
         </thead>
         <tbody>
         {% for film in films %}
             <tr>
-                <td>{{ film.id }}</td>
                 <td>{{ film.titre }}</td>
                 <td>{{ film.description }}</td>
                 <td>{{ film.ageMinimum }}</td>
                 <td>{{ film.imageName }}</td>
-                <td>{{ film.imageSize }}</td>
-                <td>{{ film.createdAt ? film.createdAt|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ film.updatedAt ? film.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
                 <td>{{ film.coupDeCoeur ? 'Yes' : 'No' }}</td>
                 <td>{{ film.genre }}</td>
                 <td>{{ film.dateSortie ? film.dateSortie|date('Y-m-d') : '' }}</td>
                 <td>
                     <a href="{{ path('app_film_show', {'id': film.id}) }}">show</a>
-                    <a href="{{ path('app_film_edit', {'id': film.id}) }}">edit</a>
                 </td>
             </tr>
         {% else %}
@@ -48,6 +39,4 @@
         {% endfor %}
         </tbody>
     </table>
-
-    <a href="{{ path('app_film_new') }}">Create new</a>
 {% endblock %}

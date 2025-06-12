@@ -7,15 +7,13 @@
 
     <table class="table">
         <thead>
-            <tr>
-                <th>Id</th>
-                <th>Date</th>
-                <th>Description</th>
-                <th>Status</th>
-                <th>CreatedAt</th>
-                <th>UpdatedAt</th>
-                <th>actions</th>
-            </tr>
+        <tr>
+            <th>Id</th>
+            <th>Date</th>
+            <th>Description</th>
+            <th>Status</th>
+            <th>actions</th>
+        </tr>
         </thead>
         <tbody>
         {% for incident in incidents %}
@@ -23,12 +21,10 @@
                 <td>{{ incident.id }}</td>
                 <td>{{ incident.date ? incident.date|date('Y-m-d H:i:s') : '' }}</td>
                 <td>{{ incident.description }}</td>
-                <td>{{ incident.status }}</td>
-                <td>{{ incident.createdAt ? incident.createdAt|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ incident.updatedAt ? incident.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ incident.status.label() }}</td>
+
                 <td>
                     <a href="{{ path('app_incident_show', {'id': incident.id}) }}">show</a>
-                    <a href="{{ path('app_incident_edit', {'id': incident.id}) }}">edit</a>
                 </td>
             </tr>
         {% else %}

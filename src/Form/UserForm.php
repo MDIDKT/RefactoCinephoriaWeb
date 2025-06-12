@@ -3,7 +3,9 @@
 namespace App\Form;
 
 use App\Entity\User;
+use App\Enum\RoleUser;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -17,14 +19,12 @@ class UserForm extends AbstractType
             ->add('nom')
             ->add('prenom')
             ->add('isVerified')
-            ->add('createdAt', null, [
-                'widget' => 'single_text'
-            ])
-            ->add('updatedAt', null, [
-                'widget' => 'single_text'
-            ])
-            ->add('roles')
-        ;
+            ->add('roles', ChoiceType::class, [
+                'choices' => RoleUser::cases(),
+                'choice_label' => fn(RoleUser $status) => $status->label(),
+                'expanded' => true,
+                'multiple' => false,
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

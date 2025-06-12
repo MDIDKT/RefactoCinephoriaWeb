@@ -5,14 +5,12 @@ namespace App\Entity;
 use App\Repository\SeanceRepository;
 use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
+use App\Entity\Traits\IDTrait;
 
 #[ORM\Entity(repositoryClass: SeanceRepository::class)]
 class Seance
 {
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
-    private ?int $id = null;
+    use IDTrait;
 
     #[ORM\Column]
     private ?DateTimeImmutable $heureDebut = null;

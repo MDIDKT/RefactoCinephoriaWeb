@@ -4,20 +4,18 @@ namespace App\Entity;
 
 use App\Repository\FilmRepository;
 use DateTime;
-use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use App\Entity\Traits\IDTrait;
 
 #[ORM\Entity(repositoryClass: FilmRepository::class)]
 #[ORM\HasLifecycleCallbacks]
 class Film
 {
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
-    private ?int $id = null;
+
+    use IDTrait;
 
     #[ORM\Column(length: 255)]
     private ?string $titre = null;
@@ -34,12 +32,6 @@ class Film
     #[ORM\Column(nullable: true)]
     private ?int $imageSize = null;
 
-    #[ORM\Column (type: Types::DATETIME_IMMUTABLE)]
-    private ?DateTimeImmutable $createdAt = null;
-
-    #[ORM\Column (type: Types::DATETIME_IMMUTABLE, nullable: true)]
-    private ?DateTimeImmutable $updatedAt = null;
-
     #[ORM\Column(nullable: true)]
     private ?bool $coupDeCoeur = null;
 
@@ -53,7 +45,7 @@ class Film
      * @var Collection<int, Seance>
      */
     #[ORM\OneToMany(targetEntity: Seance::class, mappedBy: 'film')]
-    private Collection $seances;
+    private Collection $seance;
 
     /**
      * @var Collection<int, Avis>
@@ -63,7 +55,7 @@ class Film
 
     public function __construct()
     {
-        $this->seances = new ArrayCollection();
+        $this->seance = new ArrayCollection();
         $this->avis = new ArrayCollection();
     }
 
@@ -130,45 +122,6 @@ class Film
         $this->imageSize = $imageSize;
 
         return $this;
-    }
-
-    public function getCreatedAt(): ?DateTimeImmutable
-    {
-        return $this->createdAt;
-    }
-
-    public function setCreatedAt(DateTimeImmutable $createdAt): static
-    {
-        $this->createdAt = $createdAt;
-
-        return $this;
-    }
-
-    public function getUpdatedAt(): ?DateTimeImmutable
-    {
-        return $this->updatedAt;
-    }
-
-    public function setUpdatedAt(DateTimeImmutable $updatedAt): static
-    {
-        $this->updatedAt = $updatedAt;
-
-        return $this;
-    }
-
-    #[ORM\PrePersist]
-    public function prePersist(): void
-    {
-        $now = new DateTimeImmutable();
-        $this->createdAt = $this->createdAt ?? $now;
-        $this->updatedAt = $now;
-
-    }
-
-    #[ORM\PreUpdate]
-    public function preUpdate(): void
-    {
-        $this->updatedAt = new DateTimeImmutable();
     }
 
     public function isCoupDeCoeur(): ?bool

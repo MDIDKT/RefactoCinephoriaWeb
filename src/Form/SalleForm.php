@@ -15,12 +15,6 @@ class SalleForm extends AbstractType
             ->add('numero')
             ->add('nombrePlace')
             ->add('qualite')
-            ->add('createdAt', null, [
-                'widget' => 'single_text'
-            ])
-            ->add('updatedAt', null, [
-                'widget' => 'single_text'
-            ])
             ->add('siege')
             ->add('siegePMR')
         ;

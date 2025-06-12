@@ -7,16 +7,13 @@
 
     <table class="table">
         <thead>
-            <tr>
-                <th>Id</th>
-                <th>Nom</th>
-                <th>Adresse</th>
-                <th>Telephone</th>
-                <th>Horaire</th>
-                <th>CreatedAt</th>
-                <th>UpdatedAt</th>
-                <th>actions</th>
-            </tr>
+        <tr>
+            <th>Id</th>
+            <th>Nom</th>
+            <th>Adresse</th>
+            <th>Telephone</th>
+            <th>Horaire</th>
+        </tr>
         </thead>
         <tbody>
         {% for cinema in cinemas %}
@@ -26,12 +23,6 @@
                 <td>{{ cinema.adresse }}</td>
                 <td>{{ cinema.telephone }}</td>
                 <td>{{ cinema.horaire }}</td>
-                <td>{{ cinema.createdAt ? cinema.createdAt|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ cinema.updatedAt ? cinema.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
-                <td>
-                    <a href="{{ path('app_cinema_show', {'id': cinema.id}) }}">show</a>
-                    <a href="{{ path('app_cinema_edit', {'id': cinema.id}) }}">edit</a>
-                </td>
             </tr>
         {% else %}
             <tr>
@@ -41,5 +32,4 @@
         </tbody>
     </table>
 
-    <a href="{{ path('app_cinema_new') }}">Create new</a>
 {% endblock %}

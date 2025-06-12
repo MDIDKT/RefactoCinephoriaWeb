@@ -49,33 +49,4 @@ final class IncidentController extends AbstractController
             'incident' => $incident,
         ]);
     }
-
-    #[Route('/{id}/edit', name: 'app_incident_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Incident $incident, EntityManagerInterface $entityManager): Response
-    {
-        $form = $this->createForm(IncidentForm::class, $incident);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->flush();
-
-            return $this->redirectToRoute('app_incident_index', [], Response::HTTP_SEE_OTHER);
-        }
-
-        return $this->render('incident/edit.html.twig', [
-            'incident' => $incident,
-            'form' => $form,
-        ]);
-    }
-
-    #[Route('/{id}', name: 'app_incident_delete', methods: ['POST'])]
-    public function delete(Request $request, Incident $incident, EntityManagerInterface $entityManager): Response
-    {
-        if ($this->isCsrfTokenValid('delete'.$incident->getId(), $request->getPayload()->getString('_token'))) {
-            $entityManager->remove($incident);
-            $entityManager->flush();
-        }
-
-        return $this->redirectToRoute('app_incident_index', [], Response::HTTP_SEE_OTHER);
-    }
 }
