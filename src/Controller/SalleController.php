@@ -38,7 +38,7 @@ final class SalleController extends AbstractController
 
         return $this->render('salle/new.html.twig', [
             'salle' => $salle,
-            'form' => $form,
+            'form' => $form->createView(),
         ]);
     }
 

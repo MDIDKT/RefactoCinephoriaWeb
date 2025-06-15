@@ -7,34 +7,31 @@
 
     <table class="table">
         <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ salle.id }}</td>
-            </tr>
-            <tr>
-                <th>Numero</th>
-                <td>{{ salle.numero }}</td>
-            </tr>
-            <tr>
-                <th>NombrePlace</th>
-                <td>{{ salle.nombrePlace }}</td>
-            </tr>
-            <tr>
-                <th>Qualite</th>
-                <td>{{ salle.qualite }}</td>
-            </tr>
-            <tr>
-                <th>Siege</th>
-                <td>{{ salle.siege }}</td>
-            </tr>
-            <tr>
-                <th>SiegePMR</th>
-                <td>{{ salle.siegePMR }}</td>
-            </tr>
+        <tr>
+            <th>Id</th>
+            <td>{{ salle.id }}</td>
+        </tr>
+        <tr>
+            <th>Numero</th>
+            <td>{{ salle.numero }}</td>
+        </tr>
+        <tr>
+            <th>NombrePlace</th>
+            <td>{{ salle.nombrePlace }}</td>
+        </tr>
+        <tr>
+            <th>Qualite</th>
+            <td>{{ salle.qualite }}</td>
+        </tr>
+        <tr>
+            <th>Siege</th>
+            <td>{{ salle.siege }}</td>
+        </tr>
+        <tr>
+            <th>SiegePMR</th>
+            <td>{{ salle.siegePMR }}</td>
+        </tr>
         </tbody>
     </table>
-
-    <a href="{{ path('app_salle_index') }}">back to list</a>
-
 
 {% endblock %}

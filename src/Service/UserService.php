@@ -4,32 +4,67 @@ namespace App\Service;
 
 use App\Repository\UserRepository;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
-use App\Entity\User;
 
 class UserService
 {
+    public array $getUsersByRole;
+
     public function __construct(
         private readonly UserRepository $userRepository,
         private readonly UserPasswordHasherInterface $passwordHasher
-    ) {}
-
-    public function creerUtilisateur(array $data): User
-    {
-        // Crée un nouvel utilisateur, hash le mdp, gère rôles
+    ) {
     }
 
-    public function hashPassword(User $user, string $plainPassword): string
+    // Liste de tous les utilisateurs
+    public function getAllUsers(): array
     {
-        // Retourne un mot de passe hashé
+        return $this->userRepository->findAllUsers();
     }
 
-    public function envoyerMailConfirmation(User $user): void
+    // recuperer un utilisateur par son ID
+    public function getUserById(int $id): ?object
     {
-        // Envoie l’email de confirmation d’inscription
+        return $this->userRepository->find($id);
     }
 
-    public function reinitialiserMdp(User $user): void
+    // Ajouter un nouvel utilisateur
+    public function createUser($user): void
     {
-        // Gère la procédure de reset du mot de passe
+        $hashedPassword = $this->passwordHasher->hashPassword($user, $user->getPlainPassword());
+        $user->setPassword($hashedPassword);
+        $this->userRepository->save($user);
     }
+
+    // Supprimer un utilisateur
+
+    public function saveUser($user): void
+    {
+        $hashedPassword = $this->passwordHasher->hashPassword($user, $user->getPlainPassword());
+        $user->setPassword($hashedPassword);
+        $this->userRepository->save($user);
+    }
+
+    // Mettre à jour le mot de passe d'un utilisateur
+
+    public function deleteUser($user): void
+    {
+        $this->userRepository->delete($user);
+    }
+
+    // Mot de passe oublié
+
+    public function updatePassword($user, string $newPassword): void
+    {
+        $hashedPassword = $this->passwordHasher->hashPassword($user, $newPassword);
+        $user->setPassword($hashedPassword);
+        $this->userRepository->save($user);
+    }
+
+    public function resetPassword($user, string $newPassword): void
+    {
+        $hashedPassword = $this->passwordHasher->hashPassword($user, $newPassword);
+        $user->setPassword($hashedPassword);
+        $this->userRepository->save($user);
+    }
+
 }

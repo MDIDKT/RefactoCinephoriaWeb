@@ -16,28 +16,22 @@ class SalleRepository extends ServiceEntityRepository
         parent::__construct($registry, Salle::class);
     }
 
-//    /**
-//     * @return Salle[] Returns an array of Salle objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('s')
-//            ->andWhere('s.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('s.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    // liste de toutes les salles
+    public function findAllSalles(): array
+    {
+        return $this->findBy([], ['numero' => 'ASC']);
+    }
 
-//    public function findOneBySomeField($value): ?Salle
-//    {
-//        return $this->createQueryBuilder('s')
-//            ->andWhere('s.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+    //liste des salles d'un cinéma
+    public function findSallesByCinema($cinemaId): array
+    {
+        return $this->findBy(['cinema' => $cinemaId], ['numero' => 'ASC']);
+    }
+
+    //nouvelle salle
+    public function save(Salle $salle): void
+    {
+        $this->_em->persist($salle);
+        $this->_em->flush();
+    }
 }
