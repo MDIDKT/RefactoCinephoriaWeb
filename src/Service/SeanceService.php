@@ -3,26 +3,32 @@
 namespace App\Service;
 
 use App\Repository\SeanceRepository;
-use App\Entity\Film;
-use App\Entity\Salle;
-use App\Entity\Seance;
+use DateTimeInterface;
 
-class SeanceService
+readonly class SeanceService
 {
-    public function __construct(private readonly SeanceRepository $seanceRepository) {}
+    private SeanceRepository $seanceRepository;
 
-    public function verifierDisponibilite(Salle $salle, \DateTimeInterface $heureDebut, \DateTimeInterface $heureFin): bool
+    public function __construct(SeanceRepository $seanceRepository)
     {
-        // Vérifie la disponibilité d'une salle sur un créneau donné
+        $this->seanceRepository = $seanceRepository;
     }
 
-    public function associerFilmSalle(Film $film, Salle $salle, array $data): Seance
+    // recuperation de toutes les seances
+    public function getAllSeances(): array
     {
-        // Associe un film à une salle pour créer une séance
+        return $this->seanceRepository->findAll();
     }
 
-    public function creerSeance(array $data): Seance
+    // recuperation des seances par date
+    public function getSeancesByDate(DateTimeInterface $date): array
     {
-        // Crée une nouvelle séance
+        return $this->seanceRepository->findByDate($date);
+    }
+
+    // recuperation des seances par film
+    public function getSeancesByFilm(int $filmId): array
+    {
+        return $this->seanceRepository->findByFilm($filmId);
     }
 }

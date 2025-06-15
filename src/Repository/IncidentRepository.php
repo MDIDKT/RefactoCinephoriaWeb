@@ -22,7 +22,7 @@ class IncidentRepository extends ServiceEntityRepository
     public function creerIncident(Incident $incident): void
     {
         if ($incident->getDate() === null) {
-            $incident->setDate(new DateTimeImmutable());
+            $incident->setDate(new DateTimeImmutable('now'));
         }
         $this->getEntityManager()->persist($incident);
         $this->getEntityManager()->flush();

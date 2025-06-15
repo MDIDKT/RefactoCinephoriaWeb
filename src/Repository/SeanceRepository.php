@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Seance;
+use DateTimeInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -16,28 +17,35 @@ class SeanceRepository extends ServiceEntityRepository
         parent::__construct($registry, Seance::class);
     }
 
-//    /**
-//     * @return Seance[] Returns an array of Seance objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('s')
-//            ->andWhere('s.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('s.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    // recuperation de toutes les seances
+    public function findAll(): array
+    {
+        return $this->createQueryBuilder('s')
+            ->orderBy('s.heureDebut', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
 
-//    public function findOneBySomeField($value): ?Seance
-//    {
-//        return $this->createQueryBuilder('s')
-//            ->andWhere('s.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+    // recuperation des seances par date
+    public function findByDate(DateTimeInterface $date): array
+    {
+        return $this->createQueryBuilder('s')
+            ->andWhere('s.heureDebut >= :date')
+            ->setParameter('date', $date->setTime(0, 0, 0))
+            ->orderBy('s.heureDebut', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
+
+    // recuperation des seances par film
+    public function findByFilm(int $filmId): array
+    {
+        return $this->createQueryBuilder('s')
+            ->andWhere('s.film = :filmId')
+            ->setParameter('filmId', $filmId)
+            ->orderBy('s.heureDebut', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
+
 }
