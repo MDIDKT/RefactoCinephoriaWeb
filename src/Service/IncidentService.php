@@ -2,27 +2,33 @@
 
 namespace App\Service;
 
-use App\Repository\IncidentRepository;
-use App\Entity\Salle;
-use App\Entity\Employe;
 use App\Entity\Incident;
+use App\Entity\Salle;
+use App\Repository\IncidentRepository;
 
 class IncidentService
 {
-    public function __construct(private readonly IncidentRepository $incidentRepository) {}
+    private IncidentRepository $incidentRepository;
 
-    public function creerIncident(Salle $salle, Employe $employe, string $description): Incident
+    public function __construct(IncidentRepository $incidentRepository)
     {
-        // Enregistre un nouvel incident
+        $this->incidentRepository = $incidentRepository;
     }
 
-    public function getIncidentsSalle(Salle $salle): array
+    public function listerIncidents(?Salle $salle = null, ?string $statut = null): array
     {
-        // Liste tous les incidents d'une salle
+        if ($salle || $statut) {
+            return $this->incidentRepository->findBy([
+                'salle' => $salle,
+                'status' => $statut,
+            ]);
+        }
+
+        return $this->incidentRepository->findAll();
     }
 
-    public function changerStatutIncident(Incident $incident, string $statut): Incident
+    public function creerIncident(Incident $incident): void
     {
-        // Met à jour le statut (ex : "en_cours" → "résolu")
+        $this->incidentRepository->creerIncident($incident);
     }
 }

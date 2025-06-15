@@ -96,4 +96,8 @@ class Incident
 
         return $this;
     }
+
+    public function getIncidents(Salle $salle)
+    {
+    }
 }

@@ -3,6 +3,8 @@
 namespace App\Repository;
 
 use App\Entity\Incident;
+use App\Enum\IncidentStatus;
+use DateTimeImmutable;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -16,28 +18,26 @@ class IncidentRepository extends ServiceEntityRepository
         parent::__construct($registry, Incident::class);
     }
 
-//    /**
-//     * @return Incident[] Returns an array of Incident objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('i')
-//            ->andWhere('i.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('i.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    // créer un nouvel incident
+    public function creerIncident(Incident $incident): void
+    {
+        if ($incident->getDate() === null) {
+            $incident->setDate(new DateTimeImmutable());
+        }
+        $this->getEntityManager()->persist($incident);
+        $this->getEntityManager()->flush();
+    }
 
-//    public function findOneBySomeField($value): ?Incident
-//    {
-//        return $this->createQueryBuilder('i')
-//            ->andWhere('i.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+    // Liste tous les incidents d'une salle
+    public function getIncidentsSalle($salle): array
+    {
+        return $this->findBy(['salle' => $salle]);
+    }
+
+    // Met à jour le statut
+    public function changerStatutIncident(Incident $incident, string $statut): void
+    {
+        $incident->setStatus(IncidentStatus::from($statut));
+        $this->getEntityManager()->flush();
+    }
 }
