@@ -41,10 +41,17 @@ class Cinema
     #[ORM\OneToMany(targetEntity: Reservation::class, mappedBy: 'cinema')]
     private Collection $reservations;
 
+    /**
+     * @var Collection<int, Salle>
+     */
+    #[ORM\OneToMany(targetEntity: Salle::class, mappedBy: 'cinema')]
+    private Collection $salles;
+
     public function __construct()
     {
         $this->seances = new ArrayCollection();
         $this->reservations = new ArrayCollection();
+        $this->salles = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -154,6 +161,36 @@ class Cinema
             // set the owning side to null (unless already changed)
             if ($reservation->getCinema() === $this) {
                 $reservation->setCinema(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Salle>
+     */
+    public function getSalles(): Collection
+    {
+        return $this->salles;
+    }
+
+    public function addSalle(Salle $salle): static
+    {
+        if (!$this->salles->contains($salle)) {
+            $this->salles->add($salle);
+            $salle->setCinema($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSalle(Salle $salle): static
+    {
+        if ($this->salles->removeElement($salle)) {
+            // set the owning side to null (unless already changed)
+            if ($salle->getCinema() === $this) {
+                $salle->setCinema(null);
             }
         }
 

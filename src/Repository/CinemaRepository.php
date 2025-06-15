@@ -16,28 +16,21 @@ class CinemaRepository extends ServiceEntityRepository
         parent::__construct($registry, Cinema::class);
     }
 
-//    /**
-//     * @return Cinema[] Returns an array of Cinema objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('c')
-//            ->andWhere('c.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('c.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    //recupere tous les cinémas
+    public function findAllCinemas(): array
+    {
+        return $this->findAll();
+    }
 
-//    public function findOneBySomeField($value): ?Cinema
-//    {
-//        return $this->createQueryBuilder('c')
-//            ->andWhere('c.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+    // recupere les salles d'un cinéma
+    public function findSallesByCinema($cinemaId): array
+    {
+        return $this->createQueryBuilder('c')
+            ->leftJoin('c.salles', 's')
+            ->addSelect('s')
+            ->where('c.id = :cinemaId')
+            ->setParameter('cinemaId', $cinemaId)
+            ->getQuery()
+            ->getResult();
+    }
 }

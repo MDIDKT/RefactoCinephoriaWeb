@@ -2,8 +2,7 @@
 
 namespace App\Controller;
 
-use App\Entity\Film;
-use App\Repository\FilmRepository;
+use App\Service\FilmService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -12,16 +11,20 @@ use Symfony\Component\Routing\Attribute\Route;
 final class FilmController extends AbstractController
 {
     #[Route(name: 'app_film_index', methods: ['GET'])]
-    public function index(FilmRepository $filmRepository): Response
+    public function index(FilmService $filmService): Response
     {
         return $this->render('film/index.html.twig', [
-            'films' => $filmRepository->findAll(),
+            'films' => $filmService->getAllFilms(),
         ]);
     }
 
     #[Route('/{id}', name: 'app_film_show', methods: ['GET'])]
-    public function show(Film $film): Response
+    public function show(int $id, FilmService $filmService): Response
     {
+        $film = $filmService->getFilmById($id);
+        if (!$film) {
+            throw $this->createNotFoundException('Pas de film trouvé avec cet identifiant.');
+        }
         return $this->render('film/show.html.twig', [
             'film' => $film,
         ]);

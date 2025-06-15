@@ -2,8 +2,7 @@
 
 namespace App\Controller;
 
-use App\Entity\Cinema;
-use App\Repository\CinemaRepository;
+use App\Service\CinemaService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -12,10 +11,20 @@ use Symfony\Component\Routing\Attribute\Route;
 final class CinemaController extends AbstractController
 {
     #[Route(name: 'app_cinema_index', methods: ['GET'])]
-    public function index(CinemaRepository $cinemaRepository): Response
+    public function index(CinemaService $cinemaService): Response
     {
         return $this->render('cinema/index.html.twig', [
-            'cinemas' => $cinemaRepository->findAll(),
+            'cinemas' => $cinemaService->getCinemas(),
+        ]);
+    }
+
+    #[Route('/{cinemaId}', name: 'app_cinema_show', methods: ['GET'])]
+    public function show($cinemaId, CinemaService $cinemaService): Response
+    {
+        $salles = $cinemaService->getSallesByCinema($cinemaId);
+
+        return $this->render('cinema/show.html.twig', [
+            'salles' => $salles,
         ]);
     }
 }
