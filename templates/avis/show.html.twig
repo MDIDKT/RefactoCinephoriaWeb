@@ -1,27 +1,27 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Avis{% endblock %}
+{% block title %}avis{% endblock %}
 
 {% block body %}
-    <h1>Avis</h1>
+    <h1>aviss</h1>
 
     <table class="table">
         <tbody>
         <tr>
-            <th>Id</th>
-            <td>{{ avi.id }}</td>
+            <th>User</th>
+            <td>{{ avis.user.nom }} {{ avis.user.prenom }}</td>
         </tr>
         <tr>
             <th>Note</th>
-            <td>{{ avi.note }}</td>
+            <td>{{ avis.note }}</td>
         </tr>
         <tr>
             <th>Commentaire</th>
-            <td>{{ avi.commentaire }}</td>
+            <td>{{ avis.commentaire }}</td>
         </tr>
         <tr>
             <th>IsVerified</th>
-            <td>{{ avi.isVerified ? 'Yes' : 'No' }}</td>
+            <td>{{ avis.isVerified ? 'Yes' : 'No' }}</td>
         </tr>
         </tbody>
     </table>

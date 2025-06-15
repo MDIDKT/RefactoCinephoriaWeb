@@ -2,43 +2,42 @@
 
 namespace App\Service;
 
+use App\Entity\User;
 use App\Repository\AvisRepository;
 use App\Entity\Film;
 use App\Entity\Avis;
 
-class AvisService
+final readonly class AvisService
 {
-    public function __construct(private readonly AvisRepository $avisRepository) {
+    public function __construct(private AvisRepository $avisRepository)
+    {
         // Initialisation du service avec le repository d'avis
     }
 
-    public function noterFilm(Film $film, int $note, string $commentaire, int $userID): Avis
+    // Récupération de tous les avis
+    public function findAllAvis(): array
     {
-        // Création d'un avis en attente de validation
+        return $this->avisRepository->findAllAvis();
+    }
+
+    //recuperation des avis par film et utilisateur
+    public function findAvisByFilmAndUser(Film $film, int $userId): ?Avis
+    {
+        return $this->avisRepository->findAvisByFilmAndUser($film->getId(), $userId);
+    }
+
+    // Ajout d'un avis
+    public function addAvis(Film $film, User $userId, string $content, int $note): Avis
+    {
         $avis = new Avis();
         $avis->setFilm($film);
+        $avis->setUser($userId);
+        $avis->setCommentaire($content);
         $avis->setNote($note);
-        $avis->setCommentaire($commentaire);
-        $avis->setUser($userID);
-    }
 
-    public function validerAvis(Avis $avis): Avis
-    {
-        // Validation/modération d'un avis (employé/admin)
-        $avis->setStatut(Avis::isVerified());
+        // Enregistrement de l'avis via le repository
         $this->avisRepository->save($avis);
-        return $avis;
-    }
 
-    public function getMoyenneFilm(Film $film): float
-    {
-        // Calcule la note moyenne pour le film
-        $avisValides = $this->avisRepository->findBy(['film' => $film, 'statut' => Avis::STATUT_VALIDE]);
-        $totalNotes = 0;
-        $count = count($avisValides);
-        foreach ($avisValides as $avis) {
-            $totalNotes += $avis->getNote();
-        }
-        return $count > 0 ? $totalNotes / $count : 0.0;
+        return $avis;
     }
 }

@@ -6,9 +6,6 @@ use App\Entity\Avis;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
-/**
- * @extends ServiceEntityRepository<Avis>
- */
 class AvisRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
@@ -16,28 +13,23 @@ class AvisRepository extends ServiceEntityRepository
         parent::__construct($registry, Avis::class);
     }
 
-//    /**
-//     * @return Avis[] Returns an array of Avis objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('a')
-//            ->andWhere('a.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('a.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    //recuperer tous les avis
+    public function findAllAvis(): array
+    {
+        return $this->findAll();
+    }
 
-//    public function findOneBySomeField($value): ?Avis
-//    {
-//        return $this->createQueryBuilder('a')
-//            ->andWhere('a.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+    //recuperation des avis par film et utilisateur
+    public function findAvisByFilmAndUser(int $filmId, int $userId): ?Avis
+    {
+        return $this->findOneBy(['film' => $filmId, 'user' => $userId]);
+    }
+
+    // Enregistrement d'un avis
+    public function save(Avis $avis): void
+    {
+        $entityManager = $this->getEntityManager();
+        $entityManager->persist($avis);
+        $entityManager->flush();
+    }
 }

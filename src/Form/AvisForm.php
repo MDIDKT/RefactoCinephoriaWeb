@@ -18,12 +18,6 @@ class AvisForm extends AbstractType
             ->add('note')
             ->add('commentaire')
             ->add('isVerified')
-            ->add('createdAt', null, [
-                'widget' => 'single_text'
-            ])
-            ->add('updatedAt', null, [
-                'widget' => 'single_text'
-            ])
             ->add('user', EntityType::class, [
                 'class' => User::class,
                 'choice_label' => 'id',
@@ -31,8 +25,7 @@ class AvisForm extends AbstractType
             ->add('film', EntityType::class, [
                 'class' => Film::class,
                 'choice_label' => 'id',
-            ])
-        ;
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
