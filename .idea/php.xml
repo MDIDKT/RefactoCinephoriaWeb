@@ -29,8 +29,8 @@
   </component>
   <component name="PhpCodeSniffer">
     <phpcs_settings>
-      <phpcs_by_interpreter asDefaultInterpreter="true" interpreter_id="a6dcc759-6bd9-455a-9795-34a0e2546246" standards="MySource;PEAR;PSR1;PSR12;PSR2;Squiz;Zend" tool_path="/Users/diakite/RefactoCinephoriaWeb/vendor/bin/phpcs" timeout="30000" />
       <PhpCSConfiguration beautifier_path="$PROJECT_DIR$/vendor/bin/phpcbf" tool_path="$PROJECT_DIR$/vendor/bin/phpcs" />
+      <phpcs_by_interpreter asDefaultInterpreter="true" interpreter_id="a6dcc759-6bd9-455a-9795-34a0e2546246" beautifier_path="$PROJECT_DIR$/vendor/bin/phpcbf" tool_path="/Users/diakite/RefactoCinephoriaWeb/vendor/bin/phpcs" timeout="30000" />
     </phpcs_settings>
   </component>
   <component name="PhpIncludePathManager">
