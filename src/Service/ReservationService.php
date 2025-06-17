@@ -15,6 +15,9 @@ class ReservationService
     {
     }
 
+    /**
+     * @throws Exception
+     */
     public function creerReservation(
         Seance $seance,
         Salle $salle,
@@ -25,7 +28,7 @@ class ReservationService
             throw new Exception('Pas assez de places disponibles');
         }
 
-        $reservation = new Reservation();
+        $reservation = new Reservation($reservationRepository);
         $reservation->setSeance($seance);
         $reservation->setSalle($salle);
         $reservation->setNombrePlace($nombrePlaces);
