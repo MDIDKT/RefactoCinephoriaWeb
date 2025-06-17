@@ -66,5 +66,4 @@ class UserService
         $user->setPassword($hashedPassword);
         $this->userRepository->save($user);
     }
-
 }

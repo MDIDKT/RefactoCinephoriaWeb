@@ -25,19 +25,25 @@ final class ReservationController extends AbstractController
     #[Route('/new', name: 'app_reservation_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
-        $reservation = new Reservation();
-        $form = $this->createForm(ReservationForm::class, $reservation);
+        $reservationRepository = $entityManager->getRepository(Reservation::class);
+        $form = $this->createForm(ReservationForm::class, new Reservation($reservationRepository));
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->persist($reservation);
+            //calcul du prix total
+            $reservation = $form->getData();
+            $reservation->setPrixTotal($reservation->getNombrePlace() * $reservation->getPrixTotal());
+            //génération du QRCode
+            $reservation->setQRCode('QRCode_' . uniqid()); // Placeholder for QR code generation logic
+            // Enregistrement de la réservation
+            $entityManager->persist($form->getData());
             $entityManager->flush();
 
             return $this->redirectToRoute('app_reservation_index', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('reservation/new.html.twig', [
-            'reservation' => $reservation,
+            'reservation' => new Reservation($reservationRepository),
             'form' => $form,
         ]);
     }
@@ -57,6 +63,13 @@ final class ReservationController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            // Mise à jour du prix total
+            $reservation->setPrixTotal($reservation->getNombrePlace() * $reservation->getFilm()->getPrix());
+            // Mise à jour du QRCode si nécessaire
+            if (!$reservation->getQRCode()) {
+                $reservation->setQRCode('QRCode_' . uniqid()); // Placeholder for QR code generation logic
+            }
+            // Enregistrement des modifications
             $entityManager->flush();
 
             return $this->redirectToRoute('app_reservation_index', [], Response::HTTP_SEE_OTHER);

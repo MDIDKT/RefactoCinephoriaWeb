@@ -2,19 +2,21 @@
 
 namespace App\Entity;
 
+use App\Entity\Traits\IDTrait;
 use App\Repository\FilmRepository;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use App\Entity\Traits\IDTrait;
 
+/**
+ * @method getPrix()
+ */
 #[ORM\Entity(repositoryClass: FilmRepository::class)]
 #[ORM\HasLifecycleCallbacks]
 class Film
 {
-
     use IDTrait;
 
     #[ORM\Column(length: 255)]
@@ -255,5 +257,10 @@ class Film
         }
 
         return $this;
+    }
+
+    public function __toString(): string
+    {
+        return $this->titre ?? '';
     }
 }

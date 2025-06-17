@@ -2,17 +2,17 @@
 
 namespace App\Entity;
 
-use App\Repository\ReservationRepository;
-use DateTime;
-use Doctrine\ORM\Mapping as ORM;
 use App\Entity\Traits\IDTrait;
 use App\Entity\Traits\TimestampTrait;
+use App\Repository\ReservationRepository;
+use App\Service\ReservationService;
+use DateTime;
+use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ReservationRepository::class)]
 #[ORM\HasLifecycleCallbacks]
-class Reservation
+class Reservation extends ReservationService
 {
-
     use IDTrait;
     use TimestampTrait;
 

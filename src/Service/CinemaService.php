@@ -27,6 +27,4 @@ final readonly class CinemaService
         // recupere les salles d'un cinéma
         return $this->salleRepository->findBy(['cinema' => $cinemaId]);
     }
-
 }
-

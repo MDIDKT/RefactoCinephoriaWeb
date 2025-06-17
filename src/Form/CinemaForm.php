@@ -15,8 +15,7 @@ class CinemaForm extends AbstractType
             ->add('nom')
             ->add('adresse')
             ->add('telephone')
-            ->add('horaire')
-        ;
+            ->add('horaire');
     }
 
     public function configureOptions(OptionsResolver $resolver): void
