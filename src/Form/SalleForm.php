@@ -16,8 +16,7 @@ class SalleForm extends AbstractType
             ->add('nombrePlace')
             ->add('qualite')
             ->add('siege')
-            ->add('siegePMR')
-        ;
+            ->add('siegePMR');
     }
 
     public function configureOptions(OptionsResolver $resolver): void

@@ -31,7 +31,7 @@ class SeanceRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('s')
             ->andWhere('s.heureDebut >= :date')
-            ->setParameter('date', $date->setTime(0, 0, 0))
+            ->setParameter('date', $date->setTime(0, 0))
             ->orderBy('s.heureDebut', 'ASC')
             ->getQuery()
             ->getResult();
@@ -48,4 +48,9 @@ class SeanceRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    public function save(Seance $seance): void
+    {
+        $this->_em->persist($seance);
+        $this->_em->flush();
+    }
 }

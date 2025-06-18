@@ -2,13 +2,13 @@
 
 namespace App\Entity;
 
+use App\Entity\Traits\IDTrait;
 use App\Entity\Traits\TimestampTrait;
 use App\Repository\CinemaRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use App\Entity\Traits\IDTrait;
 
 #[ORM\Entity(repositoryClass: CinemaRepository::class)]
 #[ORM\HasLifecycleCallbacks]
@@ -36,12 +36,6 @@ class Cinema
     private Collection $seances;
 
     /**
-     * @var Collection<int, Reservation>
-     */
-    #[ORM\OneToMany(targetEntity: Reservation::class, mappedBy: 'cinema')]
-    private Collection $reservations;
-
-    /**
      * @var Collection<int, Salle>
      */
     #[ORM\OneToMany(targetEntity: Salle::class, mappedBy: 'cinema')]
@@ -50,7 +44,6 @@ class Cinema
     public function __construct()
     {
         $this->seances = new ArrayCollection();
-        $this->reservations = new ArrayCollection();
         $this->salles = new ArrayCollection();
     }
 
@@ -131,36 +124,6 @@ class Cinema
             // set the owning side to null (unless already changed)
             if ($seance->getCinema() === $this) {
                 $seance->setCinema(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Reservation>
-     */
-    public function getReservations(): Collection
-    {
-        return $this->reservations;
-    }
-
-    public function addReservation(Reservation $reservation): static
-    {
-        if (!$this->reservations->contains($reservation)) {
-            $this->reservations->add($reservation);
-            $reservation->setCinema($this);
-        }
-
-        return $this;
-    }
-
-    public function removeReservation(Reservation $reservation): static
-    {
-        if ($this->reservations->removeElement($reservation)) {
-            // set the owning side to null (unless already changed)
-            if ($reservation->getCinema() === $this) {
-                $reservation->setCinema(null);
             }
         }
 

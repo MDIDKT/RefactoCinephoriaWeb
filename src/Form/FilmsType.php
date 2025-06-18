@@ -2,8 +2,8 @@
 
 namespace App\Form;
 
-use App\Entity\Cinemas;
-use App\Entity\Films;
+use App\Entity\Cinema;
+use App\Entity\Film;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -42,7 +42,7 @@ class FilmsType extends AbstractType
                 'label' => 'Qualité vidéo',
             ])
             ->add('cinemas', EntityType::class, [
-                'class' => Cinemas::class,
+                'class' => Cinema::class,
                 'choice_label' => 'nom', // Remplacez 'nom' par l'attribut à afficher dans le formulaire
                 'multiple' => true, // Permet de sélectionner plusieurs cinémas
                 'expanded' => false, // Utilisez 'true' pour afficher sous forme de cases à cocher
@@ -54,7 +54,7 @@ class FilmsType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => Films::class,
+            'data_class' => Film::class,
         ]);
     }
 }

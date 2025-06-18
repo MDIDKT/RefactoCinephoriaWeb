@@ -17,8 +17,7 @@ class ContactForm extends AbstractType
             ->add('sujet')
             ->add('contenu')
             ->add('date')
-            ->add('isVerified')
-        ;
+            ->add('isVerified');
     }
 
     public function configureOptions(OptionsResolver $resolver): void

@@ -2,14 +2,14 @@
 
 namespace App\Entity;
 
+use App\Entity\Traits\IDTrait;
+use App\Entity\Traits\TimestampTrait;
 use App\Enum\RoleUser;
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use App\Entity\Traits\IDTrait;
-use App\Entity\Traits\TimestampTrait;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -24,7 +24,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 180)]
     private ?string $email = null;
 
-    #[ORM\Column (length: 255)]
+    #[ORM\Column(length: 255)]
     private ?string $password = null;
 
     #[ORM\Column(length: 255)]
@@ -33,7 +33,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 255)]
     private ?string $prenom = null;
 
-    #[ORM\Column (type: Types::BOOLEAN)]
+    #[ORM\Column(type: Types::BOOLEAN)]
     private ?bool $isVerified = false;
 
     /**
@@ -82,30 +82,21 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     /**
-     * A visual identifier that represents this user.
-     *
-     * @see UserInterface
-     */
-    public function getUserIdentifier(): string
-    {
-        return (string)$this->email;
-    }
-
-    /**
-     * @see UserInterface
-     */
-
-    /**
-     * @param list<string> $roles
-     */
-
-    /**
      * @see PasswordAuthenticatedUserInterface
      */
     public function getPassword(): ?string
     {
         return $this->password;
     }
+
+    /**
+     * @see UserInterface
+     */
+
+    /**
+     * @param string $password
+     * @return User
+     */
 
     public function setPassword(string $password): static
     {
@@ -234,6 +225,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function __toString(): string
     {
         return $this->getUserIdentifier();
+    }
+
+    /**
+     * A visual identifier that represents this user.
+     *
+     * @see UserInterface
+     */
+    public function getUserIdentifier(): string
+    {
+        return (string)$this->email;
     }
 
     /**

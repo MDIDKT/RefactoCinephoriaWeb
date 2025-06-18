@@ -2,12 +2,12 @@
 
 namespace App\Entity;
 
+use App\Entity\Traits\IDTrait;
 use App\Repository\SeanceRepository;
 use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use App\Entity\Traits\IDTrait;
 
 #[ORM\Entity(repositoryClass: SeanceRepository::class)]
 class Seance
@@ -29,10 +29,13 @@ class Seance
     #[ORM\ManyToOne(inversedBy: 'seance')]
     private ?Film $film = null;
 
+    #[ORM\Column]
+    private ?float $prixPlace = 10.0;
+
     /**
      * @var Collection<int, Reservation>
      */
-    #[ORM\OneToMany(targetEntity: Reservation::class, mappedBy: 'seance')]
+    #[ORM\OneToMany(targetEntity: Reservation::class, mappedBy: 'Seance')]
     private Collection $reservations;
 
     public function __construct()
@@ -101,6 +104,18 @@ class Seance
     public function setFilm(?Film $film): static
     {
         $this->film = $film;
+
+        return $this;
+    }
+
+    public function getPrixPlace(): ?float
+    {
+        return $this->prixPlace;
+    }
+
+    public function setPrixPlace(float $prixPlace): static
+    {
+        $this->prixPlace = $prixPlace;
 
         return $this;
     }

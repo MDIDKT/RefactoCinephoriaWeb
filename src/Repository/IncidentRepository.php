@@ -15,7 +15,7 @@ class IncidentRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, Incident::class);
+        parent::__construct();
     }
 
     // créer un nouvel incident

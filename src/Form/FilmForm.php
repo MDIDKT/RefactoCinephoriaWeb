@@ -25,8 +25,7 @@ class FilmForm extends AbstractType
             ])
             ->add('coupDeCoeur')
             ->add('genre')
-            ->add('dateSortie')
-        ;
+            ->add('dateSortie');
     }
 
     public function configureOptions(OptionsResolver $resolver): void

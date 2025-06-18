@@ -8,7 +8,6 @@ enum RoleUser: string
     case ADMIN = 'ROLE_ADMIN';
     case EMPLOYEE = 'ROLE_EMPLOYEE';
 
-
     public function label(): string
     {
         return match ($this) {
@@ -17,5 +16,4 @@ enum RoleUser: string
             self::EMPLOYEE => 'Employé',
         };
     }
-
 }

@@ -10,7 +10,7 @@ class AvisRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, Avis::class);
+        parent::__construct();
     }
 
     //recuperer tous les avis

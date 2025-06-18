@@ -33,8 +33,7 @@ class SeanceForm extends AbstractType
             ->add('film', EntityType::class, [
                 'class' => Film::class,
                 'choice_label' => 'id',
-            ])
-        ;
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

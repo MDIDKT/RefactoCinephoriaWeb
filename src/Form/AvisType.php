@@ -3,7 +3,6 @@
 namespace App\Form;
 
 use App\Entity\Avis;
-use App\Entity\Films;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -32,7 +31,7 @@ class AvisType extends AbstractType
                 'required' => false,
             ])
             ->add('film', EntityType::class, [
-                'class' => Films::class,
+                'class' => 'App\Entity\Film',
                 'choice_label' => 'titre',
                 'disabled' => true,
             ]);

@@ -2,12 +2,12 @@
 
 namespace App\Entity;
 
+use App\Entity\Traits\IDTrait;
+use App\Entity\Traits\TimestampTrait;
 use App\Repository\SalleRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use App\Entity\Traits\IDTrait;
-use App\Entity\Traits\TimestampTrait;
 
 #[ORM\Entity(repositoryClass: SalleRepository::class)]
 #[ORM\HasLifecycleCallbacks]
@@ -43,12 +43,6 @@ class Salle
     #[ORM\OneToMany(targetEntity: Incident::class, mappedBy: 'salle')]
     private Collection $incidents;
 
-    /**
-     * @var Collection<int, Reservation>
-     */
-    #[ORM\OneToMany(targetEntity: Reservation::class, mappedBy: 'salle')]
-    private Collection $reservations;
-
     #[ORM\ManyToOne(inversedBy: 'salles')]
     private ?Cinema $cinema = null;
 
@@ -56,7 +50,6 @@ class Salle
     {
         $this->seances = new ArrayCollection();
         $this->incidents = new ArrayCollection();
-        $this->reservations = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -178,36 +171,6 @@ class Salle
             // set the owning side to null (unless already changed)
             if ($incident->getSalle() === $this) {
                 $incident->setSalle(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Reservation>
-     */
-    public function getReservations(): Collection
-    {
-        return $this->reservations;
-    }
-
-    public function addReservation(Reservation $reservation): static
-    {
-        if (!$this->reservations->contains($reservation)) {
-            $this->reservations->add($reservation);
-            $reservation->setSalle($this);
-        }
-
-        return $this;
-    }
-
-    public function removeReservation(Reservation $reservation): static
-    {
-        if ($this->reservations->removeElement($reservation)) {
-            // set the owning side to null (unless already changed)
-            if ($reservation->getSalle() === $this) {
-                $reservation->setSalle(null);
             }
         }
 

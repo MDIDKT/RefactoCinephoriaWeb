@@ -31,4 +31,14 @@ readonly class SeanceService
     {
         return $this->seanceRepository->findByFilm($filmId);
     }
+
+    // affectation du prix d'une seance
+    public function setSeancePrice(int $seanceId, float $price): void
+    {
+        $seance = $this->seanceRepository->find($seanceId);
+        if ($seance) {
+            $seance->setPrice($price);
+            $this->seanceRepository->save($seance);
+        }
+    }
 }

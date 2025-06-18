@@ -19,6 +19,13 @@
             <th>HeureFin</th>
             <td>{{ seance.heureFin ? seance.heureFin|date('d-m-Y H:i:s') : '' }}</td>
         </tr>
+        <tr>
+            <th>Prix</th>
+            <td>{{ seance.prixPlace }}</td>
+        </tr>
+        <tr>
+            <th>Salle</th>
+            <td>{{ seance.salle.numero }}</td>
         </tbody>
     </table>
 {% endblock %}

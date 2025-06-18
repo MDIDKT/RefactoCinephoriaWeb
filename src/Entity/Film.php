@@ -5,14 +5,10 @@ namespace App\Entity;
 use App\Entity\Traits\IDTrait;
 use App\Repository\FilmRepository;
 use DateTime;
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @method getPrix()
- */
 #[ORM\Entity(repositoryClass: FilmRepository::class)]
 #[ORM\HasLifecycleCallbacks]
 class Film
@@ -54,19 +50,6 @@ class Film
      */
     #[ORM\OneToMany(targetEntity: Avis::class, mappedBy: 'film')]
     private Collection $avis;
-
-    /**
-     * @var Collection<int, Reservation>
-     */
-    #[ORM\OneToMany(targetEntity: Reservation::class, mappedBy: 'film')]
-    private Collection $reservations;
-
-    public function __construct()
-    {
-        $this->seance = new ArrayCollection();
-        $this->avis = new ArrayCollection();
-        $this->reservations = new ArrayCollection();
-    }
 
     public function getId(): ?int
     {
@@ -223,36 +206,6 @@ class Film
             // set the owning side to null (unless already changed)
             if ($avi->getFilm() === $this) {
                 $avi->setFilm(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Reservation>
-     */
-    public function getReservations(): Collection
-    {
-        return $this->reservations;
-    }
-
-    public function addReservation(Reservation $reservation): static
-    {
-        if (!$this->reservations->contains($reservation)) {
-            $this->reservations->add($reservation);
-            $reservation->setFilm($this);
-        }
-
-        return $this;
-    }
-
-    public function removeReservation(Reservation $reservation): static
-    {
-        if ($this->reservations->removeElement($reservation)) {
-            // set the owning side to null (unless already changed)
-            if ($reservation->getFilm() === $this) {
-                $reservation->setFilm(null);
             }
         }
 

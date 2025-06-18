@@ -8,10 +8,10 @@ use DateTimeImmutable;
 
 trait TimestampTrait
 {
-    #[ORM\Column (type: Types::DATETIME_IMMUTABLE, nullable: false, options: ['default' => 'CURRENT_TIMESTAMP'])]
+    #[ORM\Column(type: Types::DATETIME_IMMUTABLE, nullable: false, options: ['default' => 'CURRENT_TIMESTAMP'])]
     private ?DateTimeImmutable $createdAt = null;
 
-    #[ORM\Column (type: Types::DATETIME_IMMUTABLE, nullable: true, options: ['default' => 'CURRENT_TIMESTAMP', 'on_update' => 'CURRENT_TIMESTAMP'])]
+    #[ORM\Column(type: Types::DATETIME_IMMUTABLE, nullable: true, options: ['default' => 'CURRENT_TIMESTAMP', 'on_update' => 'CURRENT_TIMESTAMP'])]
     private ?DateTimeImmutable $updatedAt = null;
 
     public function getCreatedAt(): ?DateTimeImmutable
@@ -44,7 +44,6 @@ trait TimestampTrait
         $now = new DateTimeImmutable();
         $this->createdAt = $this->createdAt ?? $now;
         $this->updatedAt = $now;
-
     }
 
     #[ORM\PreUpdate]

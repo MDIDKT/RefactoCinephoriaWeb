@@ -27,7 +27,7 @@ class Avis
     #[ORM\ManyToOne(inversedBy: 'avis')]
     private ?Film $film = null;
 
-    #[ORM\Column (type: Types::BOOLEAN, nullable: true)]
+    #[ORM\Column(type: Types::BOOLEAN, nullable: true)]
     private ?bool $isVerified = null;
 
     public function getId(): ?int
