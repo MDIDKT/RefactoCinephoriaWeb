@@ -2,47 +2,37 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Metadata\ApiResource;
+use App\Entity\Traits\TimestampTrait;
 use App\Repository\AvisRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use App\Entity\Traits\IDTrait;
 
 #[ORM\Entity(repositoryClass: AvisRepository::class)]
-#[ApiResource]
+#[ORM\HasLifecycleCallbacks]
 class Avis
 {
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
-    private ?int $id = null;
-
-    #[ORM\Column(type: Types::TEXT, nullable: true)]
-    private ?string $commentaire = null;
+    use IDTrait;
+    use TimestampTrait;
 
     #[ORM\Column]
     private ?int $note = null;
 
-    #[ORM\Column]
-    private ?bool $approuve = null;
+    #[ORM\Column(type: Types::TEXT)]
+    private ?string $commentaire = null;
 
     #[ORM\ManyToOne(inversedBy: 'avis')]
-    private ?Films $film = null;
+    private ?User $user = null;
+
+    #[ORM\ManyToOne(inversedBy: 'avis')]
+    private ?Film $film = null;
+
+    #[ORM\Column(type: Types::BOOLEAN, nullable: true)]
+    private ?bool $isVerified = null;
 
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getCommentaire(): ?string
-    {
-        return $this->commentaire;
-    }
-
-    public function setCommentaire(?string $commentaire): static
-    {
-        $this->commentaire = $commentaire;
-
-        return $this;
     }
 
     public function getNote(): ?int
@@ -57,26 +47,50 @@ class Avis
         return $this;
     }
 
-    public function isApprouve(): ?bool
+    public function getCommentaire(): ?string
     {
-        return $this->approuve;
+        return $this->commentaire;
     }
 
-    public function setApprouve(bool $approuve): static
+    public function setCommentaire(string $commentaire): static
     {
-        $this->approuve = $approuve;
+        $this->commentaire = $commentaire;
 
         return $this;
     }
 
-    public function getFilm(): ?Films
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): static
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    public function getFilm(): ?Film
     {
         return $this->film;
     }
 
-    public function setFilm(?Films $film): static
+    public function setFilm(?Film $film): static
     {
         $this->film = $film;
+
+        return $this;
+    }
+
+    public function isVerified(): ?bool
+    {
+        return $this->isVerified;
+    }
+
+    public function setIsVerified(bool $isVerified): static
+    {
+        $this->isVerified = $isVerified;
 
         return $this;
     }

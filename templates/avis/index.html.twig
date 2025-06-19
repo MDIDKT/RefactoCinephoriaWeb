@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}avis index{% endblock %}
+
+{% block body %}
+    <h1>avis index</h1>
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th>user</th>
+            <th>Note</th>
+            <th>Commentaire</th>
+            <th>IsVerified</th>
+            <th>Created At</th>
+            <th>actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for avis in avis %}
+            <tr>
+                <td>
+                    {% if avis.user %}
+                        <a href="{{ path('app_user_show', {'id': avis.user.id}) }}">{{ avis.user.nom }}</a>
+                    {% else %}
+                        No user
+                    {% endif %}
+                </td>
+                <td>{{ avis.note }}</td>
+                <td>{{ avis.commentaire }}</td>
+                <td>{{ avis.isVerified ? 'Yes' : 'No' }}</td>
+                <td>{{ avis.createdAt ? avis.createdAt|date('d-m-Y H:i:s') : '' }}</td>
+                <td>
+                    <a href="{{ path('app_avis_show', {'id': avis.id}) }}">show</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="7">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}

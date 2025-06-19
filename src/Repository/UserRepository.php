@@ -33,28 +33,42 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         $this->getEntityManager()->flush();
     }
 
-    //    /**
-    //     * @return User[] Returns an array of User objects
-    //     */
-    //    public function findByExampleField($value): array
-    //    {
-    //        return $this->createQueryBuilder('u')
-    //            ->andWhere('u.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->orderBy('u.id', 'ASC')
-    //            ->setMaxResults(10)
-    //            ->getQuery()
-    //            ->getResult()
-    //        ;
-    //    }
+    // liste de tous les utilisateurs
+    public function findAllUsers(): array
+    {
+        return $this->findBy([], ['nom' => 'ASC']);
+    }
 
-    //    public function findOneBySomeField($value): ?User
-    //    {
-    //        return $this->createQueryBuilder('u')
-    //            ->andWhere('u.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->getQuery()
-    //            ->getOneOrNullResult()
-    //        ;
-    //    }
+    // Utilisateur par son ID
+    public function findUserById(int $id): ?User
+    {
+        return $this->find($id);
+    }
+
+    // nouvelle utilisateur
+    public function save(User $user): void
+    {
+        $this->_em->persist($user);
+        $this->_em->flush();
+    }
+
+    // supprimer un utilisateur
+    public function delete(User $user): void
+    {
+        $this->_em->remove($user);
+        $this->_em->flush();
+    }
+
+    // mot de passe oublié
+    public function findUserByEmail(string $email): ?User
+    {
+        return $this->findOneBy(['email' => $email]);
+    }
+
+    //modifier un utilisateur
+    public function update(User $user): void
+    {
+        $this->_em->persist($user);
+        $this->_em->flush();
+    }
 }

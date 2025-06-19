@@ -13,6 +13,7 @@ security:
         class: App\Entity\User
         property: email
     # used to reload user from session & other features (e.g. switch_user)
+    # used to reload user from session & other features (e.g. switch_user)
 
   # Définition des firewalls
   firewalls:

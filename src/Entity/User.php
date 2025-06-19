@@ -2,100 +2,116 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Metadata\ApiResource;
-use ApiPlatform\Metadata\Delete;
-use ApiPlatform\Metadata\Get;
-use ApiPlatform\Metadata\Patch;
-use ApiPlatform\Metadata\Post;
-use ApiPlatform\Metadata\Put;
+use App\Entity\Traits\IDTrait;
+use App\Entity\Traits\TimestampTrait;
+use App\Enum\RoleUser;
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['email'])]
-#[UniqueEntity(fields: ['email'], message: 'There is already an account with this email')]
-#[ApiResource(operations: [
-    new Get(),
-    new Post(),
-    new Put(),
-    new Delete(),
-    new Patch(),
-]
-)]
+#[ORM\HasLifecycleCallbacks]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
-    private ?int $id = null;
-
-    #[ORM\Column(length: 180, unique: true)]
-    private ?string $nom = null;
-
-    #[ORM\Column(length: 180, unique: true)]
-    private ?string $prenom = null;
+    use IDTrait;
+    use TimestampTrait;
 
     #[ORM\Column(length: 180)]
     private ?string $email = null;
 
-    /**
-     * @var list<string> The user roles
-     */
-    #[ORM\Column]
-    private array $roles = [];
-
-    #[ORM\Column]
+    #[ORM\Column(length: 255)]
     private ?string $password = null;
 
-    #[ORM\Column]
-    private bool $isVerified = false;
+    #[ORM\Column(length: 255)]
+    private ?string $nom = null;
 
-    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Reservations::class)]
+    #[ORM\Column(length: 255)]
+    private ?string $prenom = null;
+
+    #[ORM\Column(type: Types::BOOLEAN)]
+    private ?bool $isVerified = false;
+
+    /**
+     * @var Collection<int, Avis>
+     */
+    #[ORM\OneToMany(targetEntity: Avis::class, mappedBy: 'user')]
+    private Collection $avis;
+
+    /**
+     * @var Collection<int, Incident>
+     */
+    #[ORM\OneToMany(targetEntity: Incident::class, mappedBy: 'Employee')]
+    private Collection $incidents;
+
+    #[ORM\Column(type: 'string', enumType: RoleUser::class, options: ['default' => RoleUser::USER->value])]
+    private RoleUser $roles = RoleUser::USER;
+
+    /**
+     * @var Collection<int, Reservation>
+     */
+    #[ORM\OneToMany(targetEntity: Reservation::class, mappedBy: 'user')]
     private Collection $reservations;
 
     public function __construct()
     {
+        $this->avis = new ArrayCollection();
+        $this->incidents = new ArrayCollection();
         $this->reservations = new ArrayCollection();
-    }
-
-    /**
-     * @return Collection<int, Reservations>
-     */
-    public function getReservations(): Collection
-    {
-        return $this->reservations;
-    }
-
-    public function addReservation(Reservations $reservation): static
-    {
-        if (!$this->reservations->contains($reservation)) {
-            $this->reservations->add($reservation);
-            $reservation->setUser($this);
-        }
-
-        return $this;
-    }
-
-    public function removeReservation(Reservations $reservation): static
-    {
-        if ($this->reservations->removeElement($reservation)) {
-            // set the owning side to null (unless already changed)
-            if ($reservation->getUser() === $this) {
-                $reservation->setUser(null);
-            }
-        }
-
-        return $this;
     }
 
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function getEmail(): ?string
+    {
+        return $this->email;
+    }
+
+    public function setEmail(string $email): static
+    {
+        $this->email = $email;
+
+        return $this;
+    }
+
+    /**
+     * @see PasswordAuthenticatedUserInterface
+     */
+    public function getPassword(): ?string
+    {
+        return $this->password;
+    }
+
+    /**
+     * @see UserInterface
+     */
+
+    /**
+     * @param string $password
+     * @return User
+     */
+
+    public function setPassword(string $password): static
+    {
+        $this->password = $password;
+
+        return $this;
+    }
+
+    /**
+     * @see UserInterface
+     */
+    public function eraseCredentials(): void
+    {
+        // If you store any temporary, sensitive data on the user, clear it here
+        // $this->plainPassword = null;
     }
 
     public function getNom(): ?string
@@ -122,16 +138,93 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getEmail(): ?string
+    public function isisVerified(): ?bool
     {
-        return $this->email;
+        return $this->isVerified;
     }
 
-    public function setEmail(string $email): static
+    public function setisVerified(bool $isVerified): static
     {
-        $this->email = $email;
+        $this->isVerified = $isVerified;
 
         return $this;
+    }
+
+    /**
+     * @return Collection<int, Avis>
+     */
+    public function getAvis(): Collection
+    {
+        return $this->avis;
+    }
+
+    public function addAvi(Avis $avi): static
+    {
+        if (!$this->avis->contains($avi)) {
+            $this->avis->add($avi);
+            $avi->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAvi(Avis $avi): static
+    {
+        if ($this->avis->removeElement($avi)) {
+            // set the owning side to null (unless already changed)
+            if ($avi->getUser() === $this) {
+                $avi->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Incident>
+     */
+    public function getIncidents(): Collection
+    {
+        return $this->incidents;
+    }
+
+    public function addIncident(Incident $incident): static
+    {
+        if (!$this->incidents->contains($incident)) {
+            $this->incidents->add($incident);
+            $incident->setEmployee($this);
+        }
+
+        return $this;
+    }
+
+    public function removeIncident(Incident $incident): static
+    {
+        if ($this->incidents->removeElement($incident)) {
+            // set the owning side to null (unless already changed)
+            if ($incident->getEmployee() === $this) {
+                $incident->setEmployee(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getRoles(): array
+    {
+        return [$this->roles->value];
+    }
+
+    public function setRoles(RoleUser $roles): static
+    {
+        $this->roles = $roles;
+
+        return $this;
+    }
+
+    public function __toString(): string
+    {
+        return $this->getUserIdentifier();
     }
 
     /**
@@ -145,67 +238,32 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     /**
-     * @see UserInterface
-     *
-     * @return list<string>
+     * @return Collection<int, Reservation>
      */
-    public function getRoles(): array
+    public function getReservations(): Collection
     {
-        $roles = $this->roles;
-        // guarantee every user at least has ROLE_USER
-        $roles[] = 'ROLE_USER';
-
-        return array_unique($roles);
+        return $this->reservations;
     }
 
-    /**
-     * @param list<string> $roles
-     */
-    public function setRoles(array $roles): static
+    public function addReservation(Reservation $reservation): static
     {
-        $this->roles = $roles;
+        if (!$this->reservations->contains($reservation)) {
+            $this->reservations->add($reservation);
+            $reservation->setUser($this);
+        }
 
         return $this;
     }
 
-    /**
-     * @see PasswordAuthenticatedUserInterface
-     */
-    public function getPassword(): ?string
+    public function removeReservation(Reservation $reservation): static
     {
-        return $this->password;
-    }
-
-    public function setPassword(string $password): static
-    {
-        $this->password = $password;
+        if ($this->reservations->removeElement($reservation)) {
+            // set the owning side to null (unless already changed)
+            if ($reservation->getUser() === $this) {
+                $reservation->setUser(null);
+            }
+        }
 
         return $this;
-    }
-
-    /**
-     * @see UserInterface
-     */
-    public function eraseCredentials(): void
-    {
-        // If you store any temporary, sensitive data on the user, clear it here
-        // $this->plainPassword = null;
-    }
-
-    public function isVerified(): bool
-    {
-        return $this->isVerified;
-    }
-
-    public function setVerified(bool $isVerified): static
-    {
-        $this->isVerified = $isVerified;
-
-        return $this;
-    }
-
-    public function __toString(): string
-    {
-        return sprintf('%s %s', $this->prenom, $this->nom);
     }
 }

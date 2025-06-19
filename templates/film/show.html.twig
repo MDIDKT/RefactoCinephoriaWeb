@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Film{% endblock %}
+
+{% block body %}
+    <h1>Film</h1>
+
+    <table class="table">
+        <tbody>
+        <tr>
+            <th>Titre</th>
+            <td>{{ film.titre }}</td>
+        </tr>
+        <tr>
+            <th>Description</th>
+            <td>{{ film.description }}</td>
+        </tr>
+        <tr>
+            <th>AgeMinimum</th>
+            <td>{{ film.ageMinimum }}</td>
+        </tr>
+        <tr>
+            <th>ImageName</th>
+            <td>{{ film.imageName }}</td>
+        </tr>
+        <tr>
+            <th>CoupDeCoeur</th>
+            <td>{{ film.coupDeCoeur ? 'Yes' : 'No' }}</td>
+        </tr>
+        <tr>
+            <th>Genre</th>
+            <td>{{ film.genre }}</td>
+        </tr>
+        <tr>
+            <th>DateSortie</th>
+            <td>{{ film.dateSortie ? film.dateSortie|date('Y-m-d') : '' }}</td>
+        </tr>
+        </tbody>
+    </table>
+{% endblock %}

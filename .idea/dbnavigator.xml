@@ -16,6 +16,9 @@
   <component name="DBNavigator.Project.DatabaseFileManager">
     <open-files />
   </component>
+  <component name="DBNavigator.Project.ExecutionManager">
+    <retain-sticky-names value="false" />
+  </component>
   <component name="DBNavigator.Project.Settings">
     <connections />
     <browser-settings>
@@ -77,9 +80,9 @@
       <lookup-filters>
         <lookup-objects>
           <object-type name="SCHEMA" enabled="true" />
-          <object-type name="USER" enabled="false" />
-          <object-type name="ROLE" enabled="false" />
-          <object-type name="PRIVILEGE" enabled="false" />
+          <object-type name="USER" enabled="true" />
+          <object-type name="ROLE" enabled="true" />
+          <object-type name="PRIVILEGE" enabled="true" />
           <object-type name="CHARSET" enabled="false" />
           <object-type name="TABLE" enabled="true" />
           <object-type name="VIEW" enabled="true" />

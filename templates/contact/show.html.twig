@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Contact{% endblock %}
+
+{% block body %}
+    <h1>Contact</h1>
+
+    <table class="table">
+        <tbody>
+        <tr>
+            <th>Id</th>
+            <td>{{ contact.id }}</td>
+        </tr>
+        <tr>
+            <th>Nom</th>
+            <td>{{ contact.nom }}</td>
+        </tr>
+        <tr>
+            <th>Email</th>
+            <td>{{ contact.email }}</td>
+        </tr>
+        <tr>
+            <th>Sujet</th>
+            <td>{{ contact.sujet }}</td>
+        </tr>
+        <tr>
+            <th>Contenu</th>
+            <td>{{ contact.contenu }}</td>
+        </tr>
+        <tr>
+            <th>Date</th>
+            <td>{{ contact.date ? contact.date|date('Y-m-d H:i:s') : '' }}</td>
+        </tr>
+        <tr>
+            <th>IsVerified</th>
+            <td>{{ contact.isVerified ? 'Yes' : 'No' }}</td>
+        </tr>
+        </tbody>
+    </table>
+
+{% endblock %}

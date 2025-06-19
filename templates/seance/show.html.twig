@@ -1,0 +1,31 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Seance{% endblock %}
+
+{% block body %}
+    <h1>Seance</h1>
+
+    <table class="table">
+        <tbody>
+        <tr>
+            <th>Film</th>
+            <td>{{ seance.film.titre }}</td>
+        </tr>
+        <tr>
+            <th>HeureDebut</th>
+            <td>{{ seance.heureDebut ? seance.heureDebut|date('d-m-Y H:i:s') : '' }}</td>
+        </tr>
+        <tr>
+            <th>HeureFin</th>
+            <td>{{ seance.heureFin ? seance.heureFin|date('d-m-Y H:i:s') : '' }}</td>
+        </tr>
+        <tr>
+            <th>Prix</th>
+            <td>{{ seance.prixPlace }}</td>
+        </tr>
+        <tr>
+            <th>Salle</th>
+            <td>{{ seance.salle.numero }}</td>
+        </tbody>
+    </table>
+{% endblock %}
