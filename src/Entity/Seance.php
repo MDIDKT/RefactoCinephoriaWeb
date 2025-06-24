@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Entity\Traits\IDTrait;
 use App\Repository\SeanceRepository;
+use DateTime;
 use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -35,8 +36,11 @@ class Seance
     /**
      * @var Collection<int, Reservation>
      */
-    #[ORM\OneToMany(targetEntity: Reservation::class, mappedBy: 'Seance')]
+    #[ORM\OneToMany(targetEntity: Reservation::class, mappedBy: 'seance')]
     private Collection $reservations;
+
+    #[ORM\Column(type: 'datetime', nullable: true)]
+    private ?DateTime $date = null;
 
     public function __construct()
     {
@@ -146,6 +150,18 @@ class Seance
                 $reservation->setSeance(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getDate(): ?DateTime
+    {
+        return $this->date;
+    }
+
+    public function setDate(DateTime $date): static
+    {
+        $this->date = $date;
 
         return $this;
     }
