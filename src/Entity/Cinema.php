@@ -103,27 +103,27 @@ class Cinema
     /**
      * @return Collection<int, Seance>
      */
-    public function getSeances(): Collection
+    public function getseances(): Collection
     {
         return $this->seances;
     }
 
-    public function addSeance(Seance $seance): static
+    public function addSeance(Seance $seances): static
     {
-        if (!$this->seances->contains($seance)) {
-            $this->seances->add($seance);
-            $seance->setCinema($this);
+        if (!$this->seances->contains($seances)) {
+            $this->seances->add($seances);
+            $seances->setCinema($this);
         }
 
         return $this;
     }
 
-    public function removeSeance(Seance $seance): static
+    public function removeSeance(Seance $seances): static
     {
-        if ($this->seances->removeElement($seance)) {
+        if ($this->seances->removeElement($seances)) {
             // set the owning side to null (unless already changed)
-            if ($seance->getCinema() === $this) {
-                $seance->setCinema(null);
+            if ($seances->getCinema() === $this) {
+                $seances->setCinema(null);
             }
         }
 

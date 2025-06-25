@@ -43,7 +43,7 @@ class Film
      * @var Collection<int, Seance>
      */
     #[ORM\OneToMany(targetEntity: Seance::class, mappedBy: 'film')]
-    private Collection $seance;
+    private Collection $seances;
 
     /**
      * @var Collection<int, Avis>
@@ -157,13 +157,13 @@ class Film
      */
     public function getSeances(): Collection
     {
-        return $this->seance;
+        return $this->seances;
     }
 
     public function addSeance(Seance $seance): static
     {
-        if (!$this->seance->contains($seance)) {
-            $this->seance->add($seance);
+        if (!$this->seances->contains($seance)) {
+            $this->seances->add($seance);
             $seance->setFilm($this);
         }
 
@@ -172,8 +172,7 @@ class Film
 
     public function removeSeance(Seance $seance): static
     {
-        if ($this->seance->removeElement($seance)) {
-            // set the owning side to null (unless already changed)
+        if ($this->seances->removeElement($seance)) {
             if ($seance->getFilm() === $this) {
                 $seance->setFilm(null);
             }

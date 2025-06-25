@@ -21,13 +21,13 @@ class Seance
     #[ORM\Column(nullable: true)]
     private ?DateTimeImmutable $heureFin = null;
 
-    #[ORM\ManyToOne(inversedBy: 'seance')]
+    #[ORM\ManyToOne(inversedBy: 'seances')]
     private ?Cinema $cinema = null;
 
-    #[ORM\ManyToOne(inversedBy: 'seance')]
+    #[ORM\ManyToOne(inversedBy: 'seances')]
     private ?Salle $salle = null;
 
-    #[ORM\ManyToOne(inversedBy: 'seance')]
+    #[ORM\ManyToOne(inversedBy: 'seances')]
     private ?Film $film = null;
 
     #[ORM\Column]

@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Reservation;
 use App\Entity\Siege;
+use App\Enum\ReservationStatus;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -12,7 +13,6 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Range;
-use App\Enum\ReservationStatus;
 
 class ReservationType extends AbstractType
 {
@@ -39,40 +39,34 @@ class ReservationType extends AbstractType
                     ]),
                 ],
             ])
+            // Choir le type de siège
             ->add('sieges', EntityType::class, [
                 'class' => Siege::class,
-                'choice_label' => function (Siege $siege) {
-                    return $siege->getNumero();
-                },
-                'multiple' => true,
+                'choice_label' => fn($siege) => $siege->getNumero(),
+                'label' => 'Type de siège',
                 'expanded' => true,
-                'label' => 'Sélectionnez vos sièges (PMR inclus si besoin)',
-                'required' => true,
-                'constraints' => [
-                    new NotBlank(['message' => 'Merci de sélectionner au moins un siège.']),
-                ],
-                'attr' => [
-                    'aria-label' => 'Sélection des sièges, y compris PMR',
-                ],
+                'multiple' => true,
             ])
+            // affiche l'utilisateur connecté et griser le champ
             ->add('user', EntityType::class, [
                 'class' => 'App\Entity\User',
-                'choice_label' => 'nom',
+                'choice_label' => 'id',
                 'label' => 'Utilisateur',
                 'disabled' => true,
+                'mapped' => false,
             ])
             ->add('seance', EntityType::class, [
                 'class' => 'App\Entity\Seance',
                 'choice_label' => 'id',
                 'label' => 'Séance',
-                'disabled' => true,
+                // 'disabled' => true,
             ])
             ->add('status', ChoiceType::class, [
                 'choices' => ReservationStatus::cases(),
                 'choice_label' => fn(ReservationStatus $status) => $status->name,
                 'choice_value' => fn(?ReservationStatus $status) => $status?->value,
                 'label' => 'Statut',
-                'disabled' => true,
+                //'disabled' => true,
             ]);
     }
 

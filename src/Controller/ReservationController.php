@@ -6,11 +6,13 @@ use App\Entity\Reservation;
 use App\Form\ReservationType;
 use App\Repository\ReservationRepository;
 use App\Service\ReservationService;
+use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Throwable;
 
 #[Route('/reservation')]
 final class ReservationController extends AbstractController
@@ -31,27 +33,35 @@ final class ReservationController extends AbstractController
 
     /**
      * Crée une nouvelle réservation.
+     *
+     * @param Request $request
+     * @param ReservationService $reservationService
+     * @param EntityManagerInterface $entityManager
+     * @return Response
      */
     #[Route('/new', name: 'app_reservation_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, ReservationService $reservationService): Response
-    {
-        $form = $this->createForm(ReservationType::class);
+    public function new(
+        Request $request,
+        ReservationService $reservationService,
+        EntityManagerInterface $entityManager
+    ): Response {
+        $reservation = new Reservation();
+        $reservation->setUser($this->getUser());
+        $form = $this->createForm(ReservationType::class, $reservation);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             try {
-                $data = $form->getData();
-                $reservation = $reservationService->creerReservation(
-                    $data->getNombrePlace(),
-                    $data->getDate(),
-                    10.0,
-                    $data->getSieges(),
-                );
+                // Ajou de la reservation
                 $reservation->setUser($this->getUser());
+                $entityManager->persist($reservation);
+                $entityManager->flush();
+
                 $this->addFlash('success', 'Réservation créée avec succès.');
                 return $this->redirectToRoute('app_reservation_confirmation', ['id' => $reservation->getId()]);
             } catch (Exception $e) {
                 $this->addFlash('danger', 'Erreur lors de la création de la réservation ' . $e->getMessage());
+            } catch (Throwable) {
             }
         }
 
@@ -62,6 +72,9 @@ final class ReservationController extends AbstractController
 
     /**
      * Affiche la confirmation d'une réservation.
+     *
+     * @param Reservation $reservation
+     * @return Response
      */
     #[Route('/{id}/confirmation', name: 'app_reservation_confirmation', methods: ['GET'])]
     public function confirmation(Reservation $reservation): Response
@@ -77,6 +90,12 @@ final class ReservationController extends AbstractController
 
     /**
      * Annule une réservation.
+     *
+     * @param Request $request
+     * @param Reservation $reservation
+     * @param ReservationService $reservationService
+     * @return Response
+     * @throws \Symfony\Component\Mailer\Exception\TransportExceptionInterface
      */
     #[Route('/{id}/annulation', name: 'app_reservation_annulation', methods: ['POST'])]
     public function annulation(
@@ -105,6 +124,9 @@ final class ReservationController extends AbstractController
 
     /**
      * Affiche le détail d'une réservation.
+     *
+     * @param Reservation $reservation
+     * @return Response
      */
     #[Route('/{id}', name: 'app_reservation_show', methods: ['GET'])]
     public function show(Reservation $reservation): Response

@@ -49,7 +49,7 @@ class ReservationService
      * Crée une réservation avec gestion transactionnelle.
      *
      * @param int $seanceId
-     * @param int[] $siegeIds
+     * @param int[] $siegeId
      * @param float $prixParPlace
      * @param string $emailUtilisateur
      * @return Reservation
@@ -57,13 +57,13 @@ class ReservationService
      */
     public function creerReservation(
         int $seanceId,
-        array $siegeIds,
+        array $siegeId,
         float $prixParPlace,
         string $emailUtilisateur
     ): Reservation {
         $this->em->beginTransaction();
         try {
-            if (!$this->verifierDisponibiliteSieges($siegeIds)) {
+            if (!$this->verifierDisponibiliteSieges($siegeId)) {
                 throw new Exception('Un ou plusieurs sièges ne sont plus disponibles.');
             }
 
@@ -72,11 +72,11 @@ class ReservationService
             $reservation->setSeance($this->seanceRepository->find($seanceId));
             $reservation->setStatus(ReservationStatus::PENDING);
             $reservation->setQrCode($this->genererQrCode());
-            $reservation->setPrixTotal($this->calculerPrixTotal(count($siegeIds), $prixParPlace));
+            $reservation->setPrixTotal($this->calculerPrixTotal(count($siegeId), $prixParPlace));
             $reservation->setUser($this->reservationRepository->findByUser($emailUtilisateur));
 
             // Attribution des sièges à la réservation
-            foreach ($siegeIds as $id) {
+            foreach ($siegeId as $id) {
                 $siege = $this->siegeRepository->find($id);
                 $siege->setReservation($reservation);
                 $this->em->persist($siege);
@@ -89,7 +89,7 @@ class ReservationService
             $this->envoiNotificationReservation($emailUtilisateur, $reservation);
 
             $this->logger?->info("Réservation créée: {$reservation->getId()}", [
-                'sieges' => $siegeIds,
+                'sieges' => $siegeId,
                 'email' => $emailUtilisateur,
             ]);
 
