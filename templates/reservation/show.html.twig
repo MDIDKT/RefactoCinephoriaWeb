@@ -8,20 +8,8 @@
     <table class="table">
         <tbody>
         <tr>
-            <th>Id</th>
-            <td>{{ reservation.id }}</td>
-        </tr>
-        <tr>
             <th>NombrePlace</th>
             <td>{{ reservation.nombrePlace }}</td>
-        </tr>
-        <tr>
-            <th>Status</th>
-            <td>{{ reservation.status.label() }}</td>
-        </tr>
-        <tr>
-            <th>Date</th>
-            <td>{{ reservation.seance ? reservation.seance.date|date('Y-m-d H:i:s') : '' }}</td>
         </tr>
         <tr>
             <th>PrixTotal</th>
@@ -32,16 +20,19 @@
             <td>{{ reservation.qrCode }}</td>
         </tr>
         <tr>
-            <th>CreatedAt</th>
-            <td>{{ reservation.createdAt ? reservation.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+            <th>Status</th>
+            <td>{{ reservation.status.value }}</td>
         </tr>
         <tr>
-            <th>UpdatedAt</th>
-            <td>{{ reservation.updatedAt ? reservation.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+            <th>CreatedAt</th>
+            <td>{{ reservation.createdAt ? reservation.createdAt|date('Y-m-d H:i:s') : '' }}</td>
         </tr>
         </tbody>
     </table>
 
     <a href="{{ path('app_reservation_index') }}">back to list</a>
 
+    <a href="{{ path('app_reservation_edit', {'id': reservation.id}) }}">edit</a>
+
+    {{ include('reservation/_delete_form.html.twig') }}
 {% endblock %}

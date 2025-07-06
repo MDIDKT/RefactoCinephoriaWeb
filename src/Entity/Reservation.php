@@ -26,7 +26,6 @@ class Reservation
      * Cette propriété représente l’utilisateur qui a effectué la réservation.
      */
     #[ORM\ManyToOne(inversedBy: 'reservations')]
-    #[Assert\NotBlank]
     #[Assert\Valid]
     private ?User $user = null;
 
@@ -64,7 +63,7 @@ class Reservation
      */
     #[ORM\Column]
     #[Assert\Range(notInRangeMessage: 'Le prix total doit être supérieur à {{ min }}.', min: 0.01)]
-    private ?float $prixTotal = null;
+    private ?float $prixTotal = 10.0;
 
     /**
      * @var string|null
@@ -80,7 +79,6 @@ class Reservation
      * Elle doit être une instance de l’énumération ReservationStatus.
      */
     #[ORM\Column(enumType: ReservationStatus::class)]
-    #[Assert\NotBlank]
     #[Assert\Valid]
     private ?ReservationStatus $status = null;
 
@@ -95,11 +93,6 @@ class Reservation
         $this->sieges = new ArrayCollection();
     }
 
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
-
     public function getUser(): ?User
     {
         return $this->user;
@@ -108,30 +101,6 @@ class Reservation
     public function setUser(?User $user): static
     {
         $this->user = $user;
-
-        return $this;
-    }
-
-    public function getSeance(): ?Seance
-    {
-        return $this->seance;
-    }
-
-    public function setSeance(?Seance $Seance): static
-    {
-        $this->seance = $Seance;
-
-        return $this;
-    }
-
-    public function getNombrePlace(): ?int
-    {
-        return $this->nombrePlace;
-    }
-
-    public function setNombrePlace(int $nombrePlace): static
-    {
-        $this->nombrePlace = $nombrePlace;
 
         return $this;
     }
@@ -156,18 +125,6 @@ class Reservation
     public function setQrCode(string $qrCode): static
     {
         $this->qrCode = $qrCode;
-
-        return $this;
-    }
-
-    public function getStatus(): ?ReservationStatus
-    {
-        return $this->status;
-    }
-
-    public function setStatus(ReservationStatus $status): static
-    {
-        $this->status = $status;
 
         return $this;
     }
@@ -200,5 +157,69 @@ class Reservation
         }
 
         return $this;
+    }
+
+    public function genererateQrCode(): void
+    {
+        // Génération d'un code QR unique pour la réservation
+        $this->qrCode = uniqid('qr_', true);
+    }
+
+    public function __toString(): string
+    {
+        return sprintf(
+            'Reservation #%d - %s - %d places - %s',
+            $this->getId(),
+            $this->getSeance() ? $this->getSeance()->getFilm()->getTitre() : 'Aucune séance',
+            $this->getNombrePlace(),
+            $this->getStatus()->name
+        );
+    }
+
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    public function getSeance(): ?Seance
+    {
+        return $this->seance;
+    }
+
+    public function setSeance(?Seance $Seance): static
+    {
+        $this->seance = $Seance;
+
+        return $this;
+    }
+
+    public function getNombrePlace(): ?int
+    {
+        return $this->nombrePlace;
+    }
+
+    public function setNombrePlace(int $nombrePlace): static
+    {
+        $this->nombrePlace = $nombrePlace;
+
+        return $this;
+    }
+
+    public function getStatus(): ?ReservationStatus
+    {
+        return $this->status;
+    }
+
+    public function setStatus(ReservationStatus $status): static
+    {
+        $this->status = $status;
+
+        return $this;
+    }
+
+    public function getTotalPrice(): float
+    {
+        // Calcul du prix total de la réservation
+        return $this->getSeance()->getPrixPlace() * $this->getNombrePlace();
     }
 }

@@ -8,35 +8,35 @@
     <table class="table">
         <thead>
         <tr>
-            <th>Id</th>
+            <th>Cinema</th>
+            <th>Film</th>
+            <th>Seance</th>
+            {# <th>Date</th> #}
             <th>NombrePlace</th>
-            <th>Status</th>
-            <th>Date</th>
             <th>PrixTotal</th>
             <th>QrCode</th>
-            <th>CreatedAt</th>
-            <th>UpdatedAt</th>
-            <th>actions</th>
+            <th>Status</th>
         </tr>
         </thead>
         <tbody>
         {% for reservation in reservations %}
             <tr>
-                <td>{{ reservation.id }}</td>
+                <td>{{ reservation.seance.cinema }}</td>
+                <td>{{ reservation.seance.film }}</td>
+                <td>{{ reservation.seance.heureDebut|date('H:i') }}.{{ reservation.seance.id }}</td>
+                {#   <td>{{ reservation.seance.heureDebut }}</td> #}
                 <td>{{ reservation.nombrePlace }}</td>
-                <td>{{ reservation.status ? 'Yes' : 'No' }}</td>
-                <td>{{ reservation.seance ? reservation.seance.date|date('Y-m-d H:i:s') : '' }}</td>
                 <td>{{ reservation.prixTotal }}</td>
                 <td>{{ reservation.qrCode }}</td>
-                <td>{{ reservation.createdAt ? reservation.createdAt|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ reservation.updatedAt ? reservation.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ reservation.status.value }}</td>
                 <td>
                     <a href="{{ path('app_reservation_show', {'id': reservation.id}) }}">show</a>
+                    <a href="{{ path('app_reservation_edit', {'id': reservation.id}) }}">edit</a>
                 </td>
             </tr>
         {% else %}
             <tr>
-                <td colspan="9">no records found</td>
+                <td colspan="8">no records found</td>
             </tr>
         {% endfor %}
         </tbody>

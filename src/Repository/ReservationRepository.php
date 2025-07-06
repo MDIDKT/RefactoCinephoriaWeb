@@ -3,12 +3,11 @@
 namespace App\Repository;
 
 use App\Entity\Reservation;
-use DateTimeInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @extends ServiceEntityRepository<Reservation>
+ * @property mixed $_em
  */
 class ReservationRepository extends ServiceEntityRepository
 {
@@ -17,58 +16,55 @@ class ReservationRepository extends ServiceEntityRepository
         parent::__construct($registry, Reservation::class);
     }
 
-    /**
-     * Retourne toutes les réservations pour un utilisateur donné, trié par date de création.
-     *
-     * @param int $userId
-     * @return Reservation[]
-     */
-    public function findByUser(int $userId): array
+    public function save(Reservation $entity, bool $flush = false): void
     {
-        return $this->findBy(['user' => $userId], ['createdAt' => 'DESC']);
+        $this->_em->persist($entity);
+        if ($flush) {
+            $this->_em->flush();
+        }
     }
 
-    /**
-     * Retourne toutes les réservations pour une séance donnée, triée par date de création.
-     *
-     * @param int $seanceId
-     * @return Reservation[]
-     */
-    public function findBySeance(int $seanceId): array
+    public function remove(Reservation $entity, bool $flush = false): void
     {
-        return $this->findBy(['seance' => $seanceId], ['createdAt' => 'DESC']);
+        $this->_em->remove($entity);
+        if ($flush) {
+            $this->_em->flush();
+        }
     }
 
-    /**
-     * Vérifie la disponibilité des sièges pour une séance.
-     */
-    public function checkDisponibiliteSieges(int $seanceId, int $nombreDemandes, int $nombreTotalSieges): bool
-    {
-        $total = $this->createQueryBuilder('r')
-            ->select('SUM(r.nombrePlace)')
-            ->where('r.seance = :seanceId')
-            ->setParameter('seanceId', $seanceId)
-            ->getQuery()
-            ->getSingleScalarResult();
-
-        $siegesReserves = $total ? (int)$total : 0;
-        return ($nombreTotalSieges - $siegesReserves) >= $nombreDemandes;
-    }
-
-    /**
-     * @param DateTimeInterface $dateDebut
-     * @param DateTimeInterface $dateFin
-     * @return int
-     * Retourne le nombre total de réservations créées entre deux dates.
-     */
-    public function countReservationsBetweenDates(DateTimeInterface $dateDebut, DateTimeInterface $dateFin): int
+    public function findAllReservations()
     {
         return $this->createQueryBuilder('r')
-            ->select('COUNT(r.id)')
-            ->where('r.createdAt BETWEEN :debut AND :fin')
-            ->setParameter('debut', $dateDebut)
-            ->setParameter('fin', $dateFin)
             ->getQuery()
-            ->getSingleScalarResult();
+            ->getResult();
+    }
+
+    public function findByFilmAndCinema($film, $cinema)
+    {
+        return $this->createQueryBuilder('r')
+            ->where('r.film = :film')
+            ->andWhere('r.cinema = :cinema')
+            ->setParameter('film', $film)
+            ->setParameter('cinema', $cinema)
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findBySeance($seance)
+    {
+        return $this->createQueryBuilder('r')
+            ->where('r.seance = :seance')
+            ->setParameter('seance', $seance)
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findByStatus($status)
+    {
+        return $this->createQueryBuilder('r')
+            ->where('r.status = :status')
+            ->setParameter('status', $status)
+            ->getQuery()
+            ->getResult();
     }
 }

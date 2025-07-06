@@ -26,10 +26,12 @@ final class SeanceController extends AbstractController
     {
         $seances = $seanceService->getSeancesByFilm($seance->getFilm()->getId());
         $film = $seance->getFilm();
+        $cinema = $seance->getCinema();
         return $this->render('seance/show.html.twig', [
             'seance' => $seance,
             'seances' => $seances,
             'film' => $film,
+            'cinema' => $cinema,
         ]);
     }
 }

@@ -165,4 +165,14 @@ class Seance
 
         return $this;
     }
+
+    public function __toString(): string
+    {
+        return sprintf(
+            '%s - %s (%s)',
+            $this->film?->getTitre() ?? 'Film inconnu',
+            $this->heureDebut->format('H:i'),
+            $this->cinema?->getNom() ?? 'Cinéma inconnu'
+        );
+    }
 }
