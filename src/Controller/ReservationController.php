@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Reservation;
 use App\Form\ReservationForm;
 use App\Repository\ReservationRepository;
+use App\Service\ReservationService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -14,6 +15,13 @@ use Symfony\Component\Routing\Attribute\Route;
 #[Route('/reservation')]
 final class ReservationController extends AbstractController
 {
+    private ReservationService $reservationService;
+
+    public function __construct(ReservationService $reservationService)
+    {
+        $this->reservationService = $reservationService;
+    }
+
     #[Route(name: 'app_reservation_index', methods: ['GET'])]
     public function index(ReservationRepository $reservationRepository): Response
     {
@@ -29,22 +37,13 @@ final class ReservationController extends AbstractController
     }
 
     #[Route('/new', name: 'app_reservation_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    public function new(Request $request): Response
     {
         $reservation = new Reservation();
         $form = $this->createForm(ReservationForm::class, $reservation);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $reservation->setUser($this->getUser());
-            $reservation->setSeance($form->get('seance')->getData());
-            $reservation->setSeance($form->get('film')->getData());
-            $reservation->setSeance($form->get('cinema')->getData());
-            $reservation->setPrixTotal($reservation->getNombrePlace() * $reservation->getPrixTotal());
-            $reservation->setQrCode(uniqid((''), true));
-            $entityManager->persist($reservation);
-            $entityManager->flush();
-
             return $this->redirectToRoute('app_reservation_index', [], Response::HTTP_SEE_OTHER);
         }
 
@@ -62,6 +61,9 @@ final class ReservationController extends AbstractController
         ]);
     }
 
+    /**
+     * @throws \Exception
+     */
     #[Route('/{id}/edit', name: 'app_reservation_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Reservation $reservation, EntityManagerInterface $entityManager): Response
     {
@@ -70,9 +72,12 @@ final class ReservationController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $reservation->setSeance($form->get('seance')->getData());
-            $reservation->setSeance($form->get('film')->getData());
-            $reservation->setSeance($form->get('cinema')->getData());
-            $reservation->setPrixTotal($reservation->getNombrePlace() * $reservation->getPrixTotal());
+            $prixTotal = $this->reservationService->calculerPrixTotalService(
+                $reservation->getSeance()->getId(),
+                'standard',
+                $reservation->getNombrePlace()
+            );
+            $reservation->setPrixTotal($prixTotal);
             $entityManager->flush();
 
             return $this->redirectToRoute('app_reservation_index', [], Response::HTTP_SEE_OTHER);
