@@ -1,4 +1,5 @@
-{% extends 'base.html.twig' %}
+{#  {% extends 'base.html.twig' %} #}
+{% extends 'components/formular.html.twig' %}
 
 {% block title %}New Reservation{% endblock %}
 
@@ -7,4 +8,16 @@
 
     {{ include('reservation/_form.html.twig') }}
 
+{% endblock %}
+
+
+{% set title = 'Réserver une séance' %}
+{% set buttonLabel = 'Je réserve' %}
+{% set backPath = path('app_reservation_index') %}
+
+{% block form_base_fields %}
+    {{ form_row(form.film) }}
+    {{ form_row(form.cinema) }}
+    {{ form_row(form.seance) }}
+    {#    {{ form_row(form.status) }} #}
 {% endblock %}

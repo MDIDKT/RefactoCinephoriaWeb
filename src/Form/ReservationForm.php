@@ -21,19 +21,18 @@ class ReservationForm extends AbstractType
                 'choice_label' => 'film.titre',
                 'label' => 'Film',
                 'placeholder' => 'Sélectionnez un film',
-                'mapped' => false, // important
+                'mapped' => false,
             ])
             ->add('cinema', EntityType::class, [
                 'class' => Seance::class,
                 'choice_label' => 'cinema',
                 'label' => 'Cinéma',
                 'placeholder' => 'Sélectionnez un cinéma',
-                'mapped' => false, // important
+                'mapped' => false,
             ])
             ->add('seance', EntityType::class, [
                 'class' => Seance::class,
                 'choice_label' => 'id',
-                // le titre du film est affiché dans la liste déroulante
                 'label' => 'Séance',
                 'placeholder' => 'Sélectionnez une séance',
             ])
@@ -41,7 +40,8 @@ class ReservationForm extends AbstractType
                 'choices' => ReservationStatus::cases(),
                 'choice_label' => fn(ReservationStatus $status) => $status->name,
                 'choice_value' => fn(?ReservationStatus $status) => $status?->value,
-                'label' => 'Statut',
+                'label' => false,
+                'attr' => ['style' => 'display: none;'],
             ])
             ->add('nombrePlace');
     }

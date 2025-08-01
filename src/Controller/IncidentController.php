@@ -1,4 +1,5 @@
 <?php
+
 // src/Controller/IncidentController.php
 
 namespace App\Controller;
@@ -54,5 +55,4 @@ final class IncidentController extends AbstractController
             'incident' => $incident,
         ]);
     }
-
 }

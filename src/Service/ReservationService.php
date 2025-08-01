@@ -37,7 +37,7 @@ class ReservationService
      * @return Reservation La réservation créée.
      * @throws Exception Si l'utilisateur ou la séance n'existe pas, ou si une réservation existe déjà.
      */
-    public function creerReservationService(int $utilisateurId, int $seanceId, int $places): Reservation
+    public function creerReservationService(int $utilisateurId, int $seanceId, int $places, ReservationRepository $reservationRepository): Reservation
     {
         $user = $this->userRepository->find($utilisateurId);
         $seance = $this->seanceRepository->find($seanceId);
@@ -58,9 +58,6 @@ class ReservationService
         $reservation->setUser($user)
             ->setSeance($seance)
             ->setNombrePlace($places);
-
-        $this->entityManager->persist($reservation);
-        $this->entityManager->flush();
 
         return $reservation;
     }
